@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title>r2mod-sync</title>
+</head>
+<body>
+<header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation">
+        <a class="brand" th:href="@{/}" aria-label="r2mod-sync home">
+            <span class="brand-mark" aria-hidden="true">r2</span>
+            <span>r2mod-sync</span>
+        </a>
+        <a class="nav-link" th:href="@{/login.html}">Sign in</a>
+    </nav>
+</header>
+<main class="home-main">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> MOD SYNCHRONIZATION</p>
+            <h1 id="hero-title">Keep your mods<br><span>in sync.</span></h1>
+            <p class="hero-description">A simpler way to keep your mod setup together. Sign in to get started.</p>
+            <a class="button-link" th:href="@{/login.html}" role="button">
+                Sign in <span aria-hidden="true">→</span>
+            </a>
+            <p class="hero-note">Your mod setup, all in one place.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-outer"></div>
+            <div class="orbit orbit-inner"></div>
+            <div class="sync-card">
+                <div class="sync-card-top">
+                    <span class="sync-icon">↻</span>
+                    <span class="sync-state"><span></span> READY</span>
+                </div>
+                <div class="sync-lines">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="sync-card-bottom">
+                    <span>MOD LIBRARY</span>
+                    <span class="sync-count">IN SYNC</span>
+                </div>
+            </div>
+            <span class="art-spark spark-one">✳</span>
+            <span class="art-spark spark-two">✳</span>
+        </div>
+    </section>
+    <footer class="home-footer">
+        <span>MODS, IN HARMONY.</span>
+    </footer>
+</main>
+</body>
+</html>

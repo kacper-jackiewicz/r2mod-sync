@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title>Sign in | r2mod-sync</title>
+</head>
+<body class="auth-page">
+<header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation">
+        <a class="brand" th:href="@{/}" aria-label="r2mod-sync home">
+            <span class="brand-mark" aria-hidden="true">r2</span>
+            <span>r2mod-sync</span>
+        </a>
+        <a class="nav-link" th:href="@{/}">Back to home</a>
+    </nav>
+</header>
+<main class="auth-main">
+    <article class="auth-card">
+        <div class="auth-card-heading">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h1>Sign in</h1>
+            <p>Sign in to continue to your mod workspace.</p>
+        </div>
+        <section class="auth-card-content">
+            <p th:if="${param.error}" class="status-message error-message" role="alert">Username or password is incorrect.</p>
+            <p th:if="${param.logout}" class="status-message">You have been signed out.</p>
+            <form th:action="@{/login}" method="post">
+                <label for="username">
+                    Username
+                    <input id="username" name="text" type="text" autocomplete="username" placeholder="Your username" required>
+                </label>
+                <label for="password">
+                    Password
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+                </label>
+                <button type="submit">Sign in <span aria-hidden="true">→</span></button>
+            </form>
+        </section>
+    </article>
+</main>
+</body>
+</html>

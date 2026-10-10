@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: r2mod-sync
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+valheim:
+  server:
+
+game-server:
+  process-name: r2modman-headless
+
+app:
+  security:
+    email: admin
+    password: admin

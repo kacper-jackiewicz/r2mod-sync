@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title>r2mod-sync</title>
+</head>
+<body class="workspace-page">
+<header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation">
+        <a class="brand" th:href="@{/}" aria-label="r2mod-sync home">
+            <span class="brand-mark" aria-hidden="true">r2</span>
+            <span>r2mod-sync</span>
+        </a>
+        <span class="account-label"><span class="account-dot"></span> Signed in</span>
+    </nav>
+</header>
+<main class="workspace-main">
+    <section class="workspace-heading">
+        <p class="eyebrow">GAME SERVER</p>
+        <h1>Server workspace</h1>
+        <p>Check the server process and submit a mod profile for processing.</p>
+    </section>
+    <article class="workspace-card server-status-card">
+        <div class="workspace-status-icon" aria-hidden="true">⋯</div>
+        <div class="workspace-status-copy">
+            <h2 th:text="${processName}">Game server process</h2>
+            <p class="status-message">Waiting for the game server backend to be configured.</p>
+        </div>
+        <span class="server-badge"><span></span> NOT CONFIGURED</span>
+    </article>
+    <section class="upload-section" aria-labelledby="upload-title">
+        <div class="upload-heading">
+            <p class="eyebrow">MOD PROFILE</p>
+            <h2 id="upload-title">Upload an RTZ file</h2>
+            <p>Select an <code>.rtz</code> file to submit it to the server backend.</p>
+        </div>
+        <p th:if="${uploadSuccess}" class="upload-feedback" role="status" th:text="${uploadSuccess}"></p>
+        <p th:if="${uploadError}" class="status-message error-message" role="alert" th:text="${uploadError}"></p>
+        <form class="upload-form" th:action="@{/server/upload}" method="post" enctype="multipart/form-data">
+            <label for="rtz-file">RTZ file
+                <input id="rtz-file" name="file" type="file" accept=".rtz,application/octet-stream" required>
+            </label>
+            <button type="submit">Upload file <span aria-hidden="true">↑</span></button>
+        </form>
+        <p class="upload-note">Only <code>.rtz</code> files are accepted. Processing will be connected to the backend.</p>
+    </section>
+    <footer class="workspace-actions">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="secondary">Sign out</button>
+        </form>
+    </footer>
+</main>
+</body>
+</html>
