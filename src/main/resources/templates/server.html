@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" th:href="@{/css/app.css}">
     <title data-i18n-title="page.server.title">R2ModSync</title>
@@ -23,6 +25,10 @@
                     <option value="pl">Polski</option>
                 </select>
             </label>
+            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode" data-i18n-aria-label="theme.switchToDark">
+                <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+                <span id="theme-toggle-label" data-i18n="theme.darkMode">Dark mode</span>
+            </button>
             <span class="account-label"><span class="account-dot"></span><span data-i18n="nav.signedIn">Signed in</span></span>
         </div>
     </nav>
@@ -34,19 +40,20 @@
         <p data-i18n="server.description">Check the server process and submit a mod profile for processing.</p>
     </section>
     <article class="workspace-card server-status-card">
-        <div class="workspace-status-icon" aria-hidden="true">⋯</div>
+        <div class="workspace-status-icon" aria-hidden="true" data-stopped-icon="X" data-running-icon="✔">⋯</div>
         <div class="workspace-status-copy">
             <h2 th:text="${processName}">Game server process</h2>
-            <p class="status-message" data-i18n="server.statusDescription">Waiting for the game server backend to be configured.</p>
+            <p id="server-status-description" class="status-message" data-i18n="server.checking">Checking server health...</p>
         </div>
-        <span class="server-badge"><span></span><span data-i18n="server.status">NOT CONFIGURED</span></span>
-        <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls">
+        <span id="server-status-badge" class="server-badge"><span></span><span data-i18n="server.checkingBadge">CHECKING</span></span>
+        <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls"
+             th:attr="data-health-url=@{/api/server/health},data-start-url=@{/api/server/start},data-stop-url=@{/api/server/stop},data-restart-url=@{/api/server/restart}">
             <div class="server-control-buttons">
-                <button type="button" class="secondary" disabled data-i18n="server.start">Start</button>
-                <button type="button" class="secondary" disabled data-i18n="server.stop">Stop</button>
-                <button type="button" class="secondary" disabled data-i18n="server.restart">Restart</button>
+                <button type="button" class="secondary" disabled data-server-action="start" data-i18n="server.start">Start</button>
+                <button type="button" class="secondary" disabled data-server-action="stop" data-i18n="server.stop">Stop</button>
+                <button type="button" class="secondary" disabled data-server-action="restart" data-i18n="server.restart">Restart</button>
             </div>
-            <p data-i18n="server.controlsNote">Controls will be available when the server backend is configured.</p>
+            <p id="server-controls-note" data-i18n="server.controlsNote">Controls will be available when the server backend is configured.</p>
         </div>
     </article>
     <section class="upload-section" aria-labelledby="upload-title">
@@ -71,7 +78,9 @@
             <p data-i18n="download.description">Get the RTZ profile currently used by the server.</p>
         </div>
         <div class="profile-download">
-            <button type="button" class="secondary" disabled data-i18n="download.button">Download current RTZ</button>
+            <button id="download-current-profile" type="button" class="secondary" disabled>
+                <span data-i18n="download.button">Download current RTZ</span>
+            </button>
             <p data-i18n="download.note">Download will be available when a current server profile is connected.</p>
         </div>
     </section>
@@ -82,5 +91,7 @@
     </footer>
 </main>
 <script th:src="@{/js/i18n.js}" defer></script>
+<script th:src="@{/js/theme.js}" defer></script>
+<script th:src="@{/js/server-controls.js}" defer></script>
 </body>
 </html>

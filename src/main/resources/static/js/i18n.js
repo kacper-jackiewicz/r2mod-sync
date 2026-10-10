@@ -55,6 +55,8 @@
             translations = loadedTranslations;
             const initialLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage : "en";
             applyLanguage(initialLanguage);
+            window.r2modSyncTranslate = (key) => translations[document.documentElement.lang]?.[key] ?? key;
+            document.dispatchEvent(new Event("r2mod-sync-translations-ready"));
             languageSelect?.addEventListener("change", () => {
                 const selectedLanguage = languageSelect.value;
                 if (supportedLanguages.includes(selectedLanguage)) {

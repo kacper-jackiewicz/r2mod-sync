@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" th:href="@{/css/app.css}">
     <title data-i18n-title="page.login.title">Sign in | R2ModSync</title>
@@ -23,6 +23,10 @@
                     <option value="pl">Polski</option>
                 </select>
             </label>
+            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode" data-i18n-aria-label="theme.switchToDark">
+                <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+                <span id="theme-toggle-label" data-i18n="theme.darkMode">Dark mode</span>
+            </button>
             <a class="nav-link" th:href="@{/}" data-i18n="nav.home">Back to home</a>
         </div>
     </nav>
@@ -52,5 +56,6 @@
     </article>
 </main>
 <script th:src="@{/js/i18n.js}" defer></script>
+<script th:src="@{/js/theme.js}" defer></script>
 </body>
 </html>
