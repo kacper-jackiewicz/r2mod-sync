@@ -27,7 +27,6 @@ public class FileService {
             throw new IllegalArgumentException("Choose a non-empty .r2z file to upload.");
         }
         Path workspace = Path.of(directoryProperties.workspace()).toAbsolutePath().normalize();
-        Files.createDirectories(workspace);
         Path destination = workspace.resolve(CANDIDATE_FILE_NAME);
         file.transferTo(destination);
         return destination;
