@@ -1,25 +1,32 @@
 package dev.kj.r2mod_sync.service;
 
+import dev.kj.r2mod_sync.model.ServerStatus;
 import dev.kj.r2mod_sync.model.server.GameServer;
+import dev.kj.r2mod_sync.service.mod.ModLoader;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+
+import static dev.kj.r2mod_sync.model.ServerStatus.*;
+import static org.awaitility.Awaitility.await;
 
 @Service
 @RequiredArgsConstructor
 public class UpdateService {
 
     private final GameServer gameServer;
+    private final FileValidator fileValidator;
+    private final ModLoader modLoader;
 
     @SneakyThrows
-    public void update(Path destination) {
-        gameServer.block();
-        TimeUnit.SECONDS.sleep(30);
-        Files.delete(destination);
+    public void update(Path candidate) {
+        fileValidator.validateR2Z(candidate);
+        gameServer.stop();
+        await().until(() -> gameServer.getStatus()== STOPPED);
+        modLoader.loadMods(candidate, gameServer.getModDirectory());
         gameServer.start();
+        await().until(() -> gameServer.getStatus()== RUNNING);
     }
 }

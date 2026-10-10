@@ -2,6 +2,8 @@ package dev.kj.r2mod_sync.model.server;
 
 import dev.kj.r2mod_sync.model.ServerStatus;
 
+import java.nio.file.Path;
+
 public interface GameServer {
     ServerStatus getStatus();
 
@@ -11,6 +13,6 @@ public interface GameServer {
 
     void restart();
 
-    void block();
+    Path getModDirectory();
 
 }

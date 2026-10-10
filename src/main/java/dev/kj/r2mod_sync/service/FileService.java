@@ -2,11 +2,14 @@ package dev.kj.r2mod_sync.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import dev.kj.r2mod_sync.config.DirectoryProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +31,18 @@ public class FileService {
     }
 
     public File send() {
+        return getCurrentPath().toFile();
+    }
+
+    @SneakyThrows
+    public void updateCurrent(Path candidate){
+        Files.move(candidate,getCurrentPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private Path getCurrentPath(){
         return Path.of(directoryProperties.workspace())
                 .toAbsolutePath()
                 .normalize()
-                .resolve("current.r2z")
-                .toFile();
+                .resolve("current.r2z");
     }
 }

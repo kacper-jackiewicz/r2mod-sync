@@ -1,7 +1,6 @@
 package dev.kj.r2mod_sync.web;
 
 import dev.kj.r2mod_sync.aop.AquireLock;import dev.kj.r2mod_sync.aop.CheckLock;
-import dev.kj.r2mod_sync.aop.StateOperation;
 import dev.kj.r2mod_sync.config.GameServerProperties;
 import dev.kj.r2mod_sync.model.ServerStatus;
 import dev.kj.r2mod_sync.model.server.GameServer;
@@ -48,27 +47,24 @@ public class GameServerApiController {
 
     @PostMapping("/stop")
     @CheckLock
-    @StateOperation
     public void stop() {
         gameServerControlService.stop();
     }
 
     @PostMapping("/restart")
     @CheckLock
-    @StateOperation
     public void restart() {
         gameServerControlService.restart();
     }
 
     @PostMapping("/upload")
-    @StateOperation
     @AquireLock
     public ResponseEntity<Map<String, String>> uploadRtz(@RequestParam("file") MultipartFile file)
             throws IOException {
         try {
             Path candidate = fileService.receive(file);
-            gameServerControlService.block();
             updateService.update(candidate);
+            fileService.updateCurrent(candidate);
             return ResponseEntity.ok(Map.of("messageKey", "upload.success"));
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(Map.of("messageKey", "upload.error"));
@@ -76,7 +72,6 @@ public class GameServerApiController {
     }
 
     @GetMapping("/download")
-    @StateOperation
     @CheckLock
     public ResponseEntity<Resource> downloadRtz() {
         File currentRtz = fileService.send();

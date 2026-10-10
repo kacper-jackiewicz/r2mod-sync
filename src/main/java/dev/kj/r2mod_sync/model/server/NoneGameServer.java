@@ -4,12 +4,14 @@ import dev.kj.r2mod_sync.model.ServerStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 public class NoneGameServer implements GameServer {
 
     private final String processName;
+    private final Path modDirectory;
     private ServerStatus status;
 
     @Override
@@ -36,8 +38,8 @@ public class NoneGameServer implements GameServer {
     }
 
     @Override
-    public void block() {
-        status = ServerStatus.UPDATING;
+    public Path getModDirectory() {
+        return modDirectory;
     }
 
 }

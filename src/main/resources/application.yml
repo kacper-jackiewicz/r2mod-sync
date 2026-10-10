@@ -7,18 +7,22 @@ spring:
     resources:
       static-locations: classpath:/static/
 
-valheim:
-  server:
+server:
+  port:  "${PORT:8080}"
 
 game-server:
-  type: NONE
-  process-name: valheim
+  type: "${GAME_SERVER_TYPE:DOCKER}"
+  process-name: "${PROCESS_NAME:valheim}"
   status: running
+  mod-directory: "${MOD_DIRECTORY:~/server}"
 
 directory:
- workspace: /workspace
+ workspace: "${WORKSPACE_DIR:~/r2z-dir}"
 
 app:
-  security:
-    email: admin
-    password: admin
+  tmp-dir: "${TMP_DIR:/tmp}"
+
+security:
+  email: "${USER:admin}"
+  password: "${PASSWORD:admin}"
+

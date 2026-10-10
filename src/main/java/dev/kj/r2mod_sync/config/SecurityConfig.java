@@ -12,7 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -38,6 +39,9 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http, GameServer gameServer) throws Exception {
 		return http
+				.csrf(csrf -> csrf
+						.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+						.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
 				.authorizeHttpRequests(authorize -> authorize
 						.anyRequest().permitAll())
 				.build();
@@ -45,8 +49,8 @@ public class SecurityConfig {
 
 	@Bean
 	UserDetailsService userDetailsService(
-			@Value("${app.security.email:}") String username,
-			@Value("${app.security.password:}") String password,
+			@Value("${security.email:}") String username,
+			@Value("${security.password:}") String password,
 			PasswordEncoder passwordEncoder) {
 		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
 			throw new IllegalStateException("Set app.security.email and app.security.password");
