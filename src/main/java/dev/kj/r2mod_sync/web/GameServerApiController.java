@@ -65,6 +65,7 @@ public class GameServerApiController {
             Path candidate = fileService.receive(file);
             updateService.update(candidate);
             fileService.updateCurrent(candidate);
+            fileService.deleteCandidate(candidate);
             return ResponseEntity.ok(Map.of("messageKey", "upload.success"));
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(Map.of("messageKey", "upload.error"));

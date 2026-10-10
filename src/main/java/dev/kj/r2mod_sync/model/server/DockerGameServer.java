@@ -31,9 +31,9 @@ public class DockerGameServer implements GameServer {
 
     @Override
     public void start() {
-            getContainerId(dockerClient).ifPresent(containerId -> {
-                dockerClient.startContainerCmd(containerId).exec();
-            });
+        getContainerId(dockerClient).ifPresent(containerId -> {
+            dockerClient.startContainerCmd(containerId).exec();
+        });
     }
 
     @Override
@@ -55,8 +55,8 @@ public class DockerGameServer implements GameServer {
         return modDirectory;
     }
 
-    private ServerStatus getStatusFromContainer(String containerId){
-        return Boolean.TRUE.equals(dockerClient.inspectContainerCmd(containerId).exec().getState().getRunning()) ?ServerStatus.RUNNING:ServerStatus.STOPPED;
+    private ServerStatus getStatusFromContainer(String containerId) {
+        return Boolean.TRUE.equals(dockerClient.inspectContainerCmd(containerId).exec().getState().getRunning()) ? ServerStatus.RUNNING : ServerStatus.STOPPED;
     }
 
 
