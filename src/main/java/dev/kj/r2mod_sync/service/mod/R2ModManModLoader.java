@@ -30,7 +30,7 @@ public class R2ModManModLoader implements ModLoader {
                 profileZip);
 
         ProcessBuilder processBuilder = new ProcessBuilder(
-                "r2podman-headless",
+                "r2modman-headless",
                 "--install-dir=" + installDir,
                 "--work-dir=" + workDir,
                 "--profile-zip=" + profileZip);
