@@ -71,6 +71,19 @@ public class GameServerApiController {
         }
     }
 
+    @PostMapping("/revert")
+    @AquireLock
+    ResponseEntity<Map<String, String>> revert(){
+        try {
+            Path candidate = fileService.getVanilla();
+            updateService.update(candidate);
+            fileService.updateCurrent(candidate);
+            return ResponseEntity.ok(Map.of("messageKey", "upload.success"));
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().body(Map.of("messageKey", "upload.error"));
+        }
+    }
+
     @GetMapping("/download")
     @CheckLock
     public ResponseEntity<Resource> downloadRtz() {

@@ -204,6 +204,42 @@
         }
     };
 
+    restoreButton.addEventListener("click", async () => {
+        if (restoreButton.disabled || actionInProgress || !serverRunning) {
+            return;
+        }
+
+        actionInProgress = true;
+        for (const controlButton of buttons.values()) {
+            controlButton.disabled = true;
+        }
+        restoreButton.disabled = true;
+
+        try {
+            const headers = { Accept: "application/json" };
+            if (csrfToken && csrfHeader) {
+                headers[csrfHeader] = csrfToken;
+            }
+            const response = await fetch(restoreButton.dataset.actionUrl, {
+                method: "POST",
+                headers,
+                credentials: "same-origin"
+            });
+            const hasMessage = await showResponseMessage(response);
+            if (!response.ok || !hasMessage) {
+                if (!hasMessage) {
+                    showMessage("server.actionFailed");
+                }
+                throw new Error(`Vanilla restore request failed: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            actionInProgress = false;
+            await refreshHealth();
+        }
+    });
+
     uploadForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (!serverRunning || uploadInProgress) {

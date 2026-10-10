@@ -18,7 +18,7 @@ public class GameServerProvider {
     public GameServer getGameServer() {
         return switch (gameServerProperties.type()) {
             case DOCKER -> new DockerGameServer(gameServerProperties.processName(),gameServerProperties.modDirectory());
-            default -> new NoneGameServer(gameServerProperties.processName(),gameServerProperties.modDirectory(),gameServerProperties.status());
+            default -> new NoneGameServer(gameServerProperties.modDirectory(),gameServerProperties.status());
         };
     }
 

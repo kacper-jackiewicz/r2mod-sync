@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class NoneGameServer implements GameServer {
 
-    private final String processName;
     private final Path modDirectory;
     private ServerStatus status;
 

@@ -87,7 +87,8 @@
             <p data-i18n="restore.description">Restore the server to its vanilla profile.</p>
         </div>
         <div class="profile-download">
-            <button id="restore-vanilla" type="button" class="secondary" disabled aria-describedby="restore-note">
+            <button id="restore-vanilla" type="button" class="secondary" disabled aria-describedby="restore-note"
+                    th:attr="data-action-url=@{/api/server/revert}">
                 <span data-i18n="restore.button">Restore vanilla setup</span>
             </button>
             <p id="restore-note" data-i18n="restore.noteUnavailable">Restore will be available when the server is running.</p>

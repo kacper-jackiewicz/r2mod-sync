@@ -18,32 +18,24 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 @Configuration
 public class SecurityConfig {
 
-//	@Bean
-//	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//		return http
-//				.authorizeHttpRequests(authorize -> authorize
-//						.requestMatchers("/", "/login.html", "/login", "/css/**", "/js/**", "/i18n/**", "/images/**").permitAll()
-//						.anyRequest().authenticated())
-//				.formLogin(form -> form
-//						.loginPage("/login.html")
-//						.loginProcessingUrl("/login")
-//						.usernameParameter("text")
-//						.passwordParameter("password")
-//						.defaultSuccessUrl("/server.html", true)
-//						.failureUrl("/login.html?error"))
-//				.logout(logout -> logout
-//						.logoutSuccessUrl("/login.html?logout"))
-//				.build();
-//	}
-
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http, GameServer gameServer) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(csrf -> csrf
 						.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 						.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
 				.authorizeHttpRequests(authorize -> authorize
-						.anyRequest().permitAll())
+						.requestMatchers("/", "/login.html", "/login", "/css/**", "/js/**", "/i18n/**", "/images/**").permitAll()
+						.anyRequest().authenticated())
+				.formLogin(form -> form
+						.loginPage("/login.html")
+						.loginProcessingUrl("/login")
+						.usernameParameter("text")
+						.passwordParameter("password")
+						.defaultSuccessUrl("/server.html", true)
+						.failureUrl("/login.html?error"))
+				.logout(logout -> logout
+						.logoutSuccessUrl("/login.html?logout"))
 				.build();
 	}
 
