@@ -11,7 +11,12 @@ valheim:
   server:
 
 game-server:
-  process-name: r2modman-headless
+  type: NONE
+  process-name: valheim
+  status: running
+
+directory:
+ workspace: /workspace
 
 app:
   security:

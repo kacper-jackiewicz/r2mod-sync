@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/app.css}">
     <title data-i18n-title="page.server.title">R2ModSync</title>
 </head>
-<body class="workspace-page">
+<body class="workspace-page server-profile-hidden">
 <header class="site-header">
     <nav class="site-nav" aria-label="Main navigation" data-i18n-aria-label="nav.mainNavigation">
         <a class="brand" th:href="@{/}" aria-label="R2ModSync home" data-i18n-aria-label="brand.home">
@@ -40,18 +40,26 @@
         <p data-i18n="server.description">Check the server process and submit a mod profile for processing.</p>
     </section>
     <article class="workspace-card server-status-card">
-        <div class="workspace-status-icon" aria-hidden="true" data-stopped-icon="X" data-running-icon="✔">⋯</div>
+        <div class="workspace-status-icon" aria-hidden="true" data-stopped-icon="X" data-running-icon="✔">
+            <span class="status-icon-running">✔</span>
+            <span class="status-icon-stopped">X</span>
+            <span class="status-icon-updating"><i></i><i></i><i></i></span>
+            <span class="status-icon-default">⋯</span>
+        </div>
         <div class="workspace-status-copy">
-            <h2 th:text="${processName}">Game server process</h2>
+            <h2 id="server-process-name" data-i18n="server.processNameLoading">Loading server process...</h2>
             <p id="server-status-description" class="status-message" data-i18n="server.checking">Checking server health...</p>
         </div>
         <span id="server-status-badge" class="server-badge"><span></span><span data-i18n="server.checkingBadge">CHECKING</span></span>
         <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls"
-             th:attr="data-health-url=@{/api/server/health},data-start-url=@{/api/server/start},data-stop-url=@{/api/server/stop},data-restart-url=@{/api/server/restart}">
+             th:attr="data-health-url=@{/api/server/health},data-config-url=@{/api/server/config}">
             <div class="server-control-buttons">
-                <button type="button" class="secondary" disabled data-server-action="start" data-i18n="server.start">Start</button>
-                <button type="button" class="secondary" disabled data-server-action="stop" data-i18n="server.stop">Stop</button>
-                <button type="button" class="secondary" disabled data-server-action="restart" data-i18n="server.restart">Restart</button>
+                <button type="button" class="secondary" disabled data-server-action="start" data-i18n="server.start"
+                        th:attr="data-action-url=@{/api/server/start}">Start</button>
+                <button type="button" class="secondary" disabled data-server-action="stop" data-i18n="server.stop"
+                        th:attr="data-action-url=@{/api/server/stop}">Stop</button>
+                <button type="button" class="secondary" disabled data-server-action="restart" data-i18n="server.restart"
+                        th:attr="data-action-url=@{/api/server/restart}">Restart</button>
             </div>
             <p id="server-controls-note" data-i18n="server.controlsNote">Controls will be available when the server backend is configured.</p>
         </div>
@@ -59,29 +67,44 @@
     <section class="upload-section" aria-labelledby="upload-title">
         <div class="upload-heading">
             <p class="eyebrow" data-i18n="upload.eyebrow">MOD PROFILE</p>
-            <h2 id="upload-title" data-i18n="upload.title">Upload an RTZ file</h2>
-            <p><span data-i18n="upload.description">Select an</span> <code>.rtz</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
+            <h2 id="upload-title" data-i18n="upload.title">Upload an R2Z file</h2>
+            <p><span data-i18n="upload.description">Select an</span> <code>.r2z</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
         </div>
-        <p th:if="${uploadSuccess}" class="upload-feedback" role="status" data-i18n="upload.success"></p>
-        <p th:if="${uploadError}" class="status-message error-message" role="alert" data-i18n="upload.error"></p>
-        <form class="upload-form" th:action="@{/server/upload}" method="post" enctype="multipart/form-data">
-            <label for="rtz-file"><span data-i18n="upload.fileLabel">RTZ file</span>
-                <input id="rtz-file" name="file" type="file" accept=".rtz,application/octet-stream" required>
+        <p id="upload-feedback" class="upload-feedback" role="status" hidden></p>
+        <form class="upload-form" th:action="@{/server/upload}" method="post" enctype="multipart/form-data"
+              th:attr="data-upload-url=@{/server/upload}">
+            <label for="r2z-file"><span data-i18n="upload.fileLabel">R2Z file</span>
+                <input id="r2z-file" name="file" type="file" accept=".r2z,application/octet-stream" required disabled>
             </label>
-            <button type="submit"><span data-i18n="upload.submit">Upload file</span> <span class="button-arrow" aria-hidden="true">↑</span></button>
+            <button type="submit" disabled><span data-i18n="upload.submit">Upload file</span> <span class="button-arrow" aria-hidden="true">↑</span></button>
         </form>
+        <p id="upload-note" class="upload-note" data-i18n="upload.noteUnavailable">Upload will be available when the server is running.</p>
+    </section>
+    <section class="restore-section" aria-labelledby="restore-title">
+        <div class="restore-heading">
+            <p class="eyebrow" data-i18n="restore.eyebrow">VANILLA SETUP</p>
+            <h2 id="restore-title" data-i18n="restore.title">Restore vanilla setup</h2>
+            <p data-i18n="restore.description">Restore the server to its vanilla profile.</p>
+        </div>
+        <div class="profile-download">
+            <button id="restore-vanilla" type="button" class="secondary" disabled aria-describedby="restore-note">
+                <span data-i18n="restore.button">Restore vanilla setup</span>
+            </button>
+            <p id="restore-note" data-i18n="restore.noteUnavailable">Restore will be available when the server is running.</p>
+        </div>
     </section>
     <section class="download-section" aria-labelledby="download-title">
         <div class="download-heading">
             <p class="eyebrow" data-i18n="download.eyebrow">CURRENT SERVER PROFILE</p>
-            <h2 id="download-title" data-i18n="download.title">Download server RTZ</h2>
-            <p data-i18n="download.description">Get the RTZ profile currently used by the server.</p>
+            <h2 id="download-title" data-i18n="download.title">Download server R2Z</h2>
+            <p data-i18n="download.description">Get the R2Z profile currently used by the server.</p>
         </div>
         <div class="profile-download">
-            <button id="download-current-profile" type="button" class="secondary" disabled>
-                <span data-i18n="download.button">Download current RTZ</span>
-            </button>
-            <p data-i18n="download.note">Download will be available when a current server profile is connected.</p>
+            <a id="download-current-profile" class="secondary" role="button" th:href="@{/server/download}"
+               aria-disabled="true" aria-describedby="download-note" tabindex="-1">
+                <span data-i18n="download.button">Download current R2Z</span>
+            </a>
+            <p id="download-note" data-i18n="download.noteUnavailable">Download will be available when the server is running.</p>
         </div>
     </section>
     <footer class="workspace-actions">

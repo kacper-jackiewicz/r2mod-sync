@@ -1,5 +1,6 @@
 package dev.kacperjackiewicz.r2mod_sync.config;
 
+import dev.kacperjackiewicz.r2mod_sync.model.server.GameServer;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,25 +12,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 public class SecurityConfig {
 
+//	@Bean
+//	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//		return http
+//				.authorizeHttpRequests(authorize -> authorize
+//						.requestMatchers("/", "/login.html", "/login", "/css/**", "/js/**", "/i18n/**", "/images/**").permitAll()
+//						.anyRequest().authenticated())
+//				.formLogin(form -> form
+//						.loginPage("/login.html")
+//						.loginProcessingUrl("/login")
+//						.usernameParameter("text")
+//						.passwordParameter("password")
+//						.defaultSuccessUrl("/server.html", true)
+//						.failureUrl("/login.html?error"))
+//				.logout(logout -> logout
+//						.logoutSuccessUrl("/login.html?logout"))
+//				.build();
+//	}
+
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http, GameServer gameServer) throws Exception {
 		return http
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/", "/login.html", "/login", "/css/**", "/js/**", "/i18n/**", "/images/**").permitAll()
-						.anyRequest().authenticated())
-				.formLogin(form -> form
-						.loginPage("/login.html")
-						.loginProcessingUrl("/login")
-						.usernameParameter("text")
-						.passwordParameter("password")
-						.defaultSuccessUrl("/server.html", true)
-						.failureUrl("/login.html?error"))
-				.logout(logout -> logout
-						.logoutSuccessUrl("/login.html?logout"))
+						.anyRequest().permitAll())
+				.addFilterAfter(new ServerRunningFilter(gameServer), AuthorizationFilter.class)
 				.build();
 	}
 
