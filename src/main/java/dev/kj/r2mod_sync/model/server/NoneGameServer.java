@@ -1,7 +1,6 @@
-package dev.kacperjackiewicz.r2mod_sync.model.server;
+package dev.kj.r2mod_sync.model.server;
 
-import dev.kacperjackiewicz.r2mod_sync.model.Health;
-import dev.kacperjackiewicz.r2mod_sync.model.ServerStatus;
+import dev.kj.r2mod_sync.model.ServerStatus;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -14,8 +13,8 @@ public class NoneGameServer implements GameServer {
     private ServerStatus status;
 
     @Override
-    public Health getHealth() {
-        return new Health(processName, status);
+    public ServerStatus getStatus() {
+        return status;
     }
 
     @Override
@@ -34,6 +33,11 @@ public class NoneGameServer implements GameServer {
         stop();
         TimeUnit.SECONDS.sleep(20);
         start();
+    }
+
+    @Override
+    public void block() {
+        status = ServerStatus.UPDATING;
     }
 
 }

@@ -1,4 +1,4 @@
-package dev.kacperjackiewicz.r2mod_sync;
+package dev.kj.r2mod_sync;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -866,6 +866,45 @@ body.server-status-only .server-status-card {
     font-size: 0.85rem;
 }
 
+#server-message-dialog {
+    width: min(32rem, calc(100% - 2rem));
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: var(--canvas);
+    color: var(--ink);
+    box-shadow: 0 1.5rem 4rem rgba(32, 32, 57, 0.2);
+}
+
+#server-message-dialog::backdrop {
+    background: rgba(25, 24, 40, 0.55);
+    backdrop-filter: blur(0.2rem);
+}
+
+#server-message-dialog article {
+    margin: 0;
+    padding: 1.5rem;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+#server-message-dialog h2 {
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+    font-size: 1.15rem;
+}
+
+#server-message-text {
+    margin-bottom: 0.6rem;
+}
+
+.server-message-refresh {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
 .workspace-status-icon {
     width: 2.75rem;
     height: 2.75rem;
@@ -1112,7 +1151,8 @@ html[data-theme="dark"] .upload-section,
 html[data-theme="dark"] .upload-form,
 html[data-theme="dark"] .restore-section,
 html[data-theme="dark"] .download-section,
-html[data-theme="dark"] .profile-download {
+html[data-theme="dark"] .profile-download,
+html[data-theme="dark"] #server-message-dialog {
     border-color: var(--line);
     background: rgba(35, 33, 47, 0.94);
 }
@@ -1212,6 +1252,10 @@ html[data-theme="dark"] .upload-feedback {
     border-left-color: #53c99b;
     background: #19382f;
     color: #a7ebd0;
+}
+
+html[data-theme="dark"] #server-message-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
 }
 
 html[data-theme="dark"] .workspace-status-copy .status-message {

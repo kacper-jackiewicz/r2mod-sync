@@ -1,4 +1,4 @@
-package dev.kacperjackiewicz.r2mod_sync.config;
+package dev.kj.r2mod_sync.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

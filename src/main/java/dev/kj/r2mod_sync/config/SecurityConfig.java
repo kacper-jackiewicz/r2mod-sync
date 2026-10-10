@@ -1,6 +1,6 @@
-package dev.kacperjackiewicz.r2mod_sync.config;
+package dev.kj.r2mod_sync.config;
 
-import dev.kacperjackiewicz.r2mod_sync.model.server.GameServer;
+import dev.kj.r2mod_sync.model.server.GameServer;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +40,6 @@ public class SecurityConfig {
 		return http
 				.authorizeHttpRequests(authorize -> authorize
 						.anyRequest().permitAll())
-				.addFilterAfter(new ServerRunningFilter(gameServer), AuthorizationFilter.class)
 				.build();
 	}
 

@@ -1,4 +1,4 @@
-package dev.kacperjackiewicz.r2mod_sync.web;
+package dev.kj.r2mod_sync.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

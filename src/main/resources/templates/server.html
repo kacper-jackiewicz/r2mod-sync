@@ -71,8 +71,8 @@
             <p><span data-i18n="upload.description">Select an</span> <code>.r2z</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
         </div>
         <p id="upload-feedback" class="upload-feedback" role="status" hidden></p>
-        <form class="upload-form" th:action="@{/server/upload}" method="post" enctype="multipart/form-data"
-              th:attr="data-upload-url=@{/server/upload}">
+        <form class="upload-form" th:action="@{/api/server/upload}" method="post" enctype="multipart/form-data"
+              th:attr="data-upload-url=@{/api/server/upload}">
             <label for="r2z-file"><span data-i18n="upload.fileLabel">R2Z file</span>
                 <input id="r2z-file" name="file" type="file" accept=".r2z,application/octet-stream" required disabled>
             </label>
@@ -100,7 +100,7 @@
             <p data-i18n="download.description">Get the R2Z profile currently used by the server.</p>
         </div>
         <div class="profile-download">
-            <a id="download-current-profile" class="secondary" role="button" th:href="@{/server/download}"
+            <a id="download-current-profile" class="secondary" role="button" th:href="@{/api/server/download}"
                aria-disabled="true" aria-describedby="download-note" tabindex="-1">
                 <span data-i18n="download.button">Download current R2Z</span>
             </a>
@@ -113,6 +113,13 @@
         </form>
     </footer>
 </main>
+<dialog id="server-message-dialog" tabindex="-1" aria-labelledby="server-message-title" aria-describedby="server-message-text">
+    <article>
+        <h2 id="server-message-title" data-i18n="server.messageTitle">Server response</h2>
+        <p id="server-message-text" role="status"></p>
+        <p class="server-message-refresh" data-i18n="server.messageRefresh">This page will refresh shortly.</p>
+    </article>
+</dialog>
 <script th:src="@{/js/i18n.js}" defer></script>
 <script th:src="@{/js/theme.js}" defer></script>
 <script th:src="@{/js/server-controls.js}" defer></script>

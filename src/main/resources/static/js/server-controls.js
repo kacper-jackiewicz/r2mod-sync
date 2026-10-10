@@ -13,6 +13,8 @@
     const uploadControls = [...document.querySelectorAll(".upload-form input, .upload-form button")];
     const uploadNote = document.querySelector("#upload-note");
     const uploadFeedback = document.querySelector("#upload-feedback");
+    const messageDialog = document.querySelector("#server-message-dialog");
+    const messageText = document.querySelector("#server-message-text");
     const restoreButton = document.querySelector("#restore-vanilla");
     const restoreNote = document.querySelector("#restore-note");
     const downloadButton = document.querySelector("#download-current-profile");
@@ -31,6 +33,26 @@
     let uploadInProgress = false;
     let healthRequestInProgress = false;
     let uploadFeedbackKey;
+    let messageRefreshTimer;
+
+    const showMessage = (messageKey) => {
+        messageText.textContent = translate(messageKey);
+        if (!messageDialog.open) {
+            messageDialog.showModal();
+        }
+        messageDialog.focus();
+        window.clearTimeout(messageRefreshTimer);
+        messageRefreshTimer = window.setTimeout(() => window.location.reload(), 8000);
+    };
+
+    const showResponseMessage = async (response) => {
+        const result = await response.clone().json().catch(() => null);
+        if (typeof result?.messageKey !== "string") {
+            return false;
+        }
+        showMessage(result.messageKey);
+        return true;
+    };
 
     const renderUploadFeedback = () => {
         if (!uploadFeedbackKey) {
@@ -49,6 +71,7 @@
                 headers: { Accept: "application/json" },
                 credentials: "same-origin"
             });
+            await showResponseMessage(response);
             if (!response.ok) {
                 throw new Error(`Server config request failed: ${response.status}`);
             }
@@ -108,23 +131,34 @@
                 credentials: "same-origin",
                 cache: "no-store"
             });
+            await showResponseMessage(response);
             if (!response.ok) {
                 throw new Error(`Health request failed: ${response.status}`);
             }
 
-            const health = await response.json();
-            if (health.status === "NOT_CONFIGURED") {
+            const responseBody = await response.text();
+            let status;
+            try {
+                status = JSON.parse(responseBody);
+            } catch {
+                status = responseBody.trim();
+            }
+            if (typeof status !== "string") {
+                throw new Error("Health response must contain a server status string.");
+            }
+
+            if (status === "NOT_CONFIGURED") {
                 setStatus("server.statusDescription", "server.status", "server-badge--unavailable");
-            } else if (health.status === "RUNNING") {
+            } else if (status === "RUNNING") {
                 setStatus("server.running", "server.statusRunning", "server-badge--running");
-            } else if (health.status === "STOPPED") {
+            } else if (status === "STOPPED") {
                 setStatus("server.stopped", "server.statusStopped", "server-badge--stopped");
-            } else if (health.status === "UPDATING") {
+            } else if (status === "UPDATING") {
                 setStatus("server.updating", "server.statusUpdating", "server-badge--updating", true);
             } else {
-                throw new Error(`Unknown server status: ${health.status}`);
+                throw new Error(`Unknown server status: ${status}`);
             }
-            setAvailability(health.status);
+            setAvailability(status);
         } catch (error) {
             setStatus("server.unavailable", "server.statusUnknown", "server-badge--unavailable", true);
             setAvailability("UNKNOWN");
@@ -155,11 +189,14 @@
                 headers,
                 credentials: "same-origin"
             });
+            const hasMessage = await showResponseMessage(response);
             if (!response.ok) {
+                if (!hasMessage) {
+                    controlsNote.textContent = translate("server.actionFailed");
+                }
                 throw new Error(`Server ${action} request failed: ${response.status}`);
             }
         } catch (error) {
-            controlsNote.textContent = translate("server.actionFailed");
             console.error(error);
         } finally {
             actionInProgress = false;
@@ -191,13 +228,10 @@
                 body: formData,
                 credentials: "same-origin"
             });
-            const result = await response.json();
-            if (typeof result.messageKey !== "string") {
+            const hasMessage = await showResponseMessage(response);
+            if (!hasMessage) {
                 throw new Error("Upload response has no message key.");
             }
-
-            uploadFeedbackKey = result.messageKey;
-            renderUploadFeedback();
         } catch (error) {
             uploadFeedbackKey = "upload.requestFailed";
             renderUploadFeedback();
@@ -205,6 +239,42 @@
         } finally {
             uploadInProgress = false;
             setAvailability(serverRunning ? "RUNNING" : "UNKNOWN");
+        }
+    });
+
+    downloadButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        if (!serverRunning || downloadButton.getAttribute("aria-disabled") === "true") {
+            return;
+        }
+
+        downloadButton.setAttribute("aria-busy", "true");
+        try {
+            const response = await fetch(downloadButton.href, {
+                headers: { Accept: "application/octet-stream, application/json" },
+                credentials: "same-origin"
+            });
+            const hasMessage = await showResponseMessage(response);
+            if (hasMessage) {
+                return;
+            }
+            if (!response.ok) {
+                showMessage("server.actionFailed");
+                throw new Error(`Profile download request failed: ${response.status}`);
+            }
+
+            const disposition = response.headers.get("Content-Disposition");
+            const filename = disposition?.match(/filename="?([^";]+)"?/i)?.[1] ?? "current.r2z";
+            const downloadUrl = URL.createObjectURL(await response.blob());
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.download = filename;
+            link.click();
+            window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            downloadButton.removeAttribute("aria-busy");
         }
     });
 
