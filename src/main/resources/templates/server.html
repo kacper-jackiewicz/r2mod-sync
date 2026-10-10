@@ -6,53 +6,82 @@
     <meta name="color-scheme" content="light">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" th:href="@{/css/app.css}">
-    <title>r2mod-sync</title>
+    <title data-i18n-title="page.server.title">R2ModSync</title>
 </head>
 <body class="workspace-page">
 <header class="site-header">
-    <nav class="site-nav" aria-label="Main navigation">
-        <a class="brand" th:href="@{/}" aria-label="r2mod-sync home">
+    <nav class="site-nav" aria-label="Main navigation" data-i18n-aria-label="nav.mainNavigation">
+        <a class="brand" th:href="@{/}" aria-label="R2ModSync home" data-i18n-aria-label="brand.home">
             <span class="brand-mark" aria-hidden="true">r2</span>
-            <span>r2mod-sync</span>
+            <span>R2ModSync</span>
         </a>
-        <span class="account-label"><span class="account-dot"></span> Signed in</span>
+        <div class="nav-actions">
+            <label class="language-picker">
+                <span class="visually-hidden" data-i18n="language.label">Language</span>
+                <select class="language-select" aria-label="Language" data-i18n-aria-label="language.label">
+                    <option value="en">English</option>
+                    <option value="pl">Polski</option>
+                </select>
+            </label>
+            <span class="account-label"><span class="account-dot"></span><span data-i18n="nav.signedIn">Signed in</span></span>
+        </div>
     </nav>
 </header>
 <main class="workspace-main">
     <section class="workspace-heading">
-        <p class="eyebrow">GAME SERVER</p>
-        <h1>Server workspace</h1>
-        <p>Check the server process and submit a mod profile for processing.</p>
+        <p class="eyebrow" data-i18n="server.eyebrow">GAME SERVER</p>
+        <h1 data-i18n="server.title">Server workspace</h1>
+        <p data-i18n="server.description">Check the server process and submit a mod profile for processing.</p>
     </section>
     <article class="workspace-card server-status-card">
         <div class="workspace-status-icon" aria-hidden="true">⋯</div>
         <div class="workspace-status-copy">
             <h2 th:text="${processName}">Game server process</h2>
-            <p class="status-message">Waiting for the game server backend to be configured.</p>
+            <p class="status-message" data-i18n="server.statusDescription">Waiting for the game server backend to be configured.</p>
         </div>
-        <span class="server-badge"><span></span> NOT CONFIGURED</span>
+        <span class="server-badge"><span></span><span data-i18n="server.status">NOT CONFIGURED</span></span>
+        <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls">
+            <div class="server-control-buttons">
+                <button type="button" class="secondary" disabled data-i18n="server.start">Start</button>
+                <button type="button" class="secondary" disabled data-i18n="server.stop">Stop</button>
+                <button type="button" class="secondary" disabled data-i18n="server.restart">Restart</button>
+            </div>
+            <p data-i18n="server.controlsNote">Controls will be available when the server backend is configured.</p>
+        </div>
     </article>
     <section class="upload-section" aria-labelledby="upload-title">
         <div class="upload-heading">
-            <p class="eyebrow">MOD PROFILE</p>
-            <h2 id="upload-title">Upload an RTZ file</h2>
-            <p>Select an <code>.rtz</code> file to submit it to the server backend.</p>
+            <p class="eyebrow" data-i18n="upload.eyebrow">MOD PROFILE</p>
+            <h2 id="upload-title" data-i18n="upload.title">Upload an RTZ file</h2>
+            <p><span data-i18n="upload.description">Select an</span> <code>.rtz</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
         </div>
-        <p th:if="${uploadSuccess}" class="upload-feedback" role="status" th:text="${uploadSuccess}"></p>
-        <p th:if="${uploadError}" class="status-message error-message" role="alert" th:text="${uploadError}"></p>
+        <p th:if="${uploadSuccess}" class="upload-feedback" role="status" data-i18n="upload.success"></p>
+        <p th:if="${uploadError}" class="status-message error-message" role="alert" data-i18n="upload.error"></p>
         <form class="upload-form" th:action="@{/server/upload}" method="post" enctype="multipart/form-data">
-            <label for="rtz-file">RTZ file
+            <label for="rtz-file"><span data-i18n="upload.fileLabel">RTZ file</span>
                 <input id="rtz-file" name="file" type="file" accept=".rtz,application/octet-stream" required>
             </label>
-            <button type="submit">Upload file <span aria-hidden="true">↑</span></button>
+            <button type="submit"><span data-i18n="upload.submit">Upload file</span> <span class="button-arrow" aria-hidden="true">↑</span></button>
         </form>
-        <p class="upload-note">Only <code>.rtz</code> files are accepted. Processing will be connected to the backend.</p>
+        <p class="upload-note"><span data-i18n="upload.noteStart">Only</span> <code>.rtz</code> <span data-i18n="upload.noteEnd">files are accepted. Processing will be connected to the backend.</span></p>
+    </section>
+    <section class="download-section" aria-labelledby="download-title">
+        <div class="download-heading">
+            <p class="eyebrow" data-i18n="download.eyebrow">CURRENT SERVER PROFILE</p>
+            <h2 id="download-title" data-i18n="download.title">Download server RTZ</h2>
+            <p data-i18n="download.description">Get the RTZ profile currently used by the server.</p>
+        </div>
+        <div class="profile-download">
+            <button type="button" class="secondary" disabled data-i18n="download.button">Download current RTZ</button>
+            <p data-i18n="download.note">Download will be available when a current server profile is connected.</p>
+        </div>
     </section>
     <footer class="workspace-actions">
         <form th:action="@{/logout}" method="post">
-            <button type="submit" class="secondary">Sign out</button>
+            <button type="submit" class="secondary" data-i18n="nav.signOut">Sign out</button>
         </form>
     </footer>
 </main>
+<script th:src="@{/js/i18n.js}" defer></script>
 </body>
 </html>

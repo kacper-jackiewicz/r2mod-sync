@@ -6,41 +6,51 @@
     <meta name="color-scheme" content="light">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" th:href="@{/css/app.css}">
-    <title>Sign in | r2mod-sync</title>
+    <title data-i18n-title="page.login.title">Sign in | R2ModSync</title>
 </head>
 <body class="auth-page">
 <header class="site-header">
-    <nav class="site-nav" aria-label="Main navigation">
-        <a class="brand" th:href="@{/}" aria-label="r2mod-sync home">
+    <nav class="site-nav" aria-label="Main navigation" data-i18n-aria-label="nav.mainNavigation">
+        <a class="brand" th:href="@{/}" aria-label="R2ModSync home" data-i18n-aria-label="brand.home">
             <span class="brand-mark" aria-hidden="true">r2</span>
-            <span>r2mod-sync</span>
+            <span>R2ModSync</span>
         </a>
-        <a class="nav-link" th:href="@{/}">Back to home</a>
+        <div class="nav-actions">
+            <label class="language-picker">
+                <span class="visually-hidden" data-i18n="language.label">Language</span>
+                <select class="language-select" aria-label="Language" data-i18n-aria-label="language.label">
+                    <option value="en">English</option>
+                    <option value="pl">Polski</option>
+                </select>
+            </label>
+            <a class="nav-link" th:href="@{/}" data-i18n="nav.home">Back to home</a>
+        </div>
     </nav>
 </header>
 <main class="auth-main">
     <article class="auth-card">
         <div class="auth-card-heading">
-            <p class="eyebrow">WELCOME BACK</p>
-            <h1>Sign in</h1>
-            <p>Sign in to continue to your mod workspace.</p>
+            <p class="eyebrow" data-i18n="login.eyebrow">WELCOME BACK</p>
+            <h1 data-i18n="nav.signIn">Sign in</h1>
+            <p data-i18n="login.description">Sign in to continue to your mod workspace.</p>
         </div>
         <section class="auth-card-content">
-            <p th:if="${param.error}" class="status-message error-message" role="alert">Username or password is incorrect.</p>
-            <p th:if="${param.logout}" class="status-message">You have been signed out.</p>
+            <p th:if="${param.error}" class="status-message error-message" role="alert" data-i18n="login.error">Username or password is incorrect.</p>
+            <p th:if="${param.logout}" class="status-message" data-i18n="login.logout">You have been signed out.</p>
             <form th:action="@{/login}" method="post">
                 <label for="username">
-                    Username
-                    <input id="username" name="text" type="text" autocomplete="username" placeholder="Your username" required>
+                    <span data-i18n="login.username">Username</span>
+                    <input id="username" name="text" type="text" autocomplete="username" placeholder="Your username" data-i18n-placeholder="login.usernamePlaceholder" required>
                 </label>
                 <label for="password">
-                    Password
-                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+                    <span data-i18n="login.password">Password</span>
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" data-i18n-placeholder="login.passwordPlaceholder" required>
                 </label>
-                <button type="submit">Sign in <span aria-hidden="true">→</span></button>
+                <button type="submit"><span data-i18n="nav.signIn">Sign in</span> <span class="button-arrow" aria-hidden="true">→</span></button>
             </form>
         </section>
     </article>
 </main>
+<script th:src="@{/js/i18n.js}" defer></script>
 </body>
 </html>
