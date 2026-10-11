@@ -52,7 +52,7 @@
         </div>
         <span id="server-status-badge" class="server-badge"><span></span><span data-i18n="server.checkingBadge">CHECKING</span></span>
         <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls"
-             th:attr="data-health-url=@{/api/server/health},data-config-url=@{/api/server/config}">
+             th:attr="data-health-url=@{/api/server/health},data-config-url=@{/api/server/config},data-message-url=@{/server-message.html}">
             <div class="server-control-buttons">
                 <button type="button" class="secondary" disabled data-server-action="start" data-i18n="server.start"
                         th:attr="data-action-url=@{/api/server/start}">Start</button>
@@ -113,13 +113,6 @@
         </form>
     </footer>
 </main>
-<dialog id="server-message-dialog" tabindex="-1" aria-labelledby="server-message-title" aria-describedby="server-message-text">
-    <article>
-        <h2 id="server-message-title" data-i18n="server.messageTitle">Server response</h2>
-        <p id="server-message-text" role="status"></p>
-        <p class="server-message-refresh" data-i18n="server.messageRefresh">This page will refresh shortly.</p>
-    </article>
-</dialog>
 <script th:src="@{/js/i18n.js}" defer></script>
 <script th:src="@{/js/theme.js}" defer></script>
 <script th:src="@{/js/server-controls.js}" defer></script>

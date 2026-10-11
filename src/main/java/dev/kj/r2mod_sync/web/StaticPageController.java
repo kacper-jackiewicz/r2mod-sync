@@ -16,6 +16,11 @@ public class StaticPageController {
         return "server";
     }
 
+    @GetMapping("/server-message.html")
+    public String serverMessage() {
+        return "server-message";
+    }
+
     @GetMapping("/login.html")
     public String loginPage() {
         return "login";

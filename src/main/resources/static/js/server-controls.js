@@ -12,8 +12,6 @@
     const uploadForm = document.querySelector(".upload-form");
     const uploadControls = [...document.querySelectorAll(".upload-form input, .upload-form button")];
     const uploadNote = document.querySelector("#upload-note");
-    const messageDialog = document.querySelector("#server-message-dialog");
-    const messageText = document.querySelector("#server-message-text");
     const restoreButton = document.querySelector("#restore-vanilla");
     const restoreNote = document.querySelector("#restore-note");
     const downloadButton = document.querySelector("#download-current-profile");
@@ -31,18 +29,12 @@
     let serverRunning = false;
     let uploadInProgress = false;
     let healthRequestInProgress = false;
-    let messageRefreshTimer;
-
     uploadForm.reset();
 
     const showMessage = (messageKey) => {
-        messageText.textContent = translate(messageKey);
-        if (!messageDialog.open) {
-            messageDialog.showModal();
-        }
-        messageDialog.focus();
-        window.clearTimeout(messageRefreshTimer);
-        messageRefreshTimer = window.setTimeout(() => window.location.reload(), 8000);
+        const messageUrl = new URL(controls.dataset.messageUrl, window.location.href);
+        messageUrl.searchParams.set("messageKey", messageKey);
+        window.location.assign(messageUrl);
     };
 
     const showResponseMessage = async (response) => {

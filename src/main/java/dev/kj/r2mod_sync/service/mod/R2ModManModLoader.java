@@ -4,6 +4,7 @@ import dev.kj.r2mod_sync.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -50,7 +51,7 @@ public class R2ModManModLoader implements ModLoader {
         try {
             Path pluginsDir = destination.resolve("BepInEx").resolve("plugins");
             log.info("Cleaning mod directory: {}", pluginsDir.toAbsolutePath().normalize());
-            Optional.of(pluginsDir.toFile()).map(File::listFiles).map(Arrays::asList).orElse(Collections.emptyList()).forEach(File::delete);
+            FileUtils.cleanDirectory(pluginsDir.toFile());
         } catch (Exception e) {
             log.error("Could not clean mod directory: {}", destination.toAbsolutePath().normalize(), e);
         }

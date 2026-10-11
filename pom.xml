@@ -14,6 +14,7 @@
 	<properties>
 		<java.version>25</java.version>
 		<lombok.version>1.18.48</lombok.version>
+		<docker-java.version>3.7.1</docker-java.version>
 	</properties>
 
 
@@ -64,13 +65,18 @@
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java</artifactId>
-			<version>3.7.1</version>
+			<version>${docker-java.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java-transport-httpclient5</artifactId>
-			<version>3.7.1</version>
+			<version>${docker-java.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
