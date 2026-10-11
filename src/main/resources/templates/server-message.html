@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title data-i18n-title="page.serverMessage.title">Server response | R2ModSync</title>
+</head>
+<body class="workspace-page">
+<dialog id="server-message-dialog" aria-labelledby="server-message-title" aria-describedby="server-message-text"
+        th:attr="data-return-url=@{/server.html}">
+    <article>
+        <h2 id="server-message-title" data-i18n="server.messageTitle">Server response</h2>
+        <p id="server-message-text" role="status" data-i18n="server.actionFailed">The server has responded to your request.</p>
+        <p class="server-message-refresh" data-i18n="server.messageRefresh">Returning to the server workspace shortly.</p>
+    </article>
+</dialog>
+<script th:src="@{/js/i18n.js}" defer></script>
+<script th:src="@{/js/theme.js}" defer></script>
+<script th:src="@{/js/server-message.js}" defer></script>
+</body>
+</html>
