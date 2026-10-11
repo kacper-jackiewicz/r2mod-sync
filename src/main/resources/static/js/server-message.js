@@ -1,6 +1,7 @@
 (() => {
     const messageDialog = document.querySelector("#server-message-dialog");
     const messageText = document.querySelector("#server-message-text");
+    const progressIcon = document.querySelector("#server-message-progress");
     const translate = (key) => window.r2modSyncTranslate?.(key) ?? key;
     const messageKeys = new Set([
         "upload.success",
@@ -12,8 +13,10 @@
         "server.operationInProgress",
         "server.notRunning"
     ]);
-    const requestedMessageKey = new URLSearchParams(window.location.search).get("messageKey");
-    const messageKey = messageKeys.has(requestedMessageKey) ? requestedMessageKey : "server.actionFailed";
+    const params = new URLSearchParams(window.location.search);
+    const operationId = params.get("operationId");
+    let messageKey = messageKeys.has(params.get("messageKey")) ? params.get("messageKey") : "server.actionInProgress";
+    progressIcon.hidden = !operationId;
 
     const renderMessage = () => {
         messageText.textContent = translate(messageKey);
@@ -25,7 +28,62 @@
     }
     messageDialog.showModal();
 
-    window.setTimeout(() => {
-        window.location.replace(messageDialog.dataset.returnUrl);
-    }, 6000);
+    const returnToWorkspace = () => {
+        window.setTimeout(() => {
+            window.location.replace(messageDialog.dataset.returnUrl);
+        }, 6000);
+    };
+
+    const pollOperation = async () => {
+        const operationUrl = new URL(
+            `${messageDialog.dataset.operationUrl}/${encodeURIComponent(operationId)}`,
+            window.location.href
+        );
+        const waitForNextPoll = () => new Promise((resolve) => window.setTimeout(resolve, 1000));
+
+        while (true) {
+            try {
+                const response = await fetch(operationUrl, {
+                    headers: { Accept: "application/json" },
+                    credentials: "same-origin",
+                    cache: "no-store"
+                });
+                if (!response.ok) {
+                    throw new Error(`Server operation status request failed: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.state === "COMPLETED" || result.state === "FAILED") {
+                    messageKey = messageKeys.has(result.messageKey) ? result.messageKey : "server.actionFailed";
+                    renderMessage();
+                    progressIcon.hidden = true;
+                    returnToWorkspace();
+                    return;
+                }
+                if (result.state !== "PENDING") {
+                    throw new Error("Server operation returned an unknown state.");
+                }
+            } catch (error) {
+                console.error(error);
+                if (error instanceof TypeError) {
+                    await waitForNextPoll();
+                    continue;
+                }
+                messageKey = "server.actionFailed";
+                renderMessage();
+                progressIcon.hidden = true;
+                returnToWorkspace();
+                return;
+            }
+
+            await waitForNextPoll();
+        }
+    };
+
+    if (operationId) {
+        pollOperation();
+    } else {
+        renderMessage();
+        returnToWorkspace();
+    }
 })();

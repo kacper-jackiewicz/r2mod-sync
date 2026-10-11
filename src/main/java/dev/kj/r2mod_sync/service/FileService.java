@@ -11,18 +11,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileService {
 
-    public static String CANDIDATE_FILE_NAME = "candidate.r2z";
     public static String CURRENT_FILE_NAME = "current.r2z";
     public static String VANILLA_FILE_NAME = "vanilla.r2z";
+    public static String CANDIDATE_PREFIX = "candidate_";
 
     private final DirectoryProperties directoryProperties;
 
@@ -37,14 +40,20 @@ public class FileService {
         }
     }
 
-    public Path receive(MultipartFile file) throws IOException {
+    public Path receive(MultipartFile file) {
+
         if (file == null || file.getOriginalFilename() == null || file.isEmpty()) {
             throw new IllegalArgumentException("Choose a non-empty .r2z file to upload.");
         }
-        Path workspace = Path.of(directoryProperties.workspace()).toAbsolutePath().normalize();
-        Path destination = workspace.resolve(CANDIDATE_FILE_NAME);
-        file.transferTo(destination);
-        return destination;
+        try {
+            Path workspace = Path.of(directoryProperties.workspace()).toAbsolutePath().normalize();
+            Path destination = workspace.resolve(buildCandidateFileName());
+            file.transferTo(destination);
+            return destination;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
     }
 
     public File send() {
@@ -56,9 +65,16 @@ public class FileService {
         Files.copy(candidate, getCurrentPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    @SneakyThrows
+
     public void deleteCandidate(Path candidate) {
-        Files.delete(candidate);
+        try {
+            if (Objects.isNull(candidate)) {
+                return;
+            }
+            Files.delete(candidate);
+        } catch (IOException e) {
+            log.error("Failed to delete candidate file: {}", candidate.toAbsolutePath().normalize(), e);
+        }
     }
 
     private Path getCurrentPath() {
@@ -73,5 +89,9 @@ public class FileService {
                 .toAbsolutePath()
                 .normalize()
                 .resolve(VANILLA_FILE_NAME);
+    }
+
+    private String buildCandidateFileName() {
+        return CANDIDATE_PREFIX + UUID.randomUUID() + ".r2z";
     }
 }

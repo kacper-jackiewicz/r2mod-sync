@@ -31,19 +31,27 @@
     let healthRequestInProgress = false;
     uploadForm.reset();
 
-    const showMessage = (messageKey) => {
+    const showMessage = (messageKey, operationId) => {
         const messageUrl = new URL(controls.dataset.messageUrl, window.location.href);
-        messageUrl.searchParams.set("messageKey", messageKey);
+        if (operationId) {
+            messageUrl.searchParams.set("operationId", operationId);
+        } else {
+            messageUrl.searchParams.set("messageKey", messageKey);
+        }
         window.location.assign(messageUrl);
     };
 
     const showResponseMessage = async (response) => {
         const result = await response.clone().json().catch(() => null);
-        if (typeof result?.messageKey !== "string") {
-            return false;
+        if (typeof result?.operationId === "string") {
+            showMessage("", result.operationId);
+            return true;
         }
-        showMessage(result.messageKey);
-        return true;
+        if (typeof result?.messageKey === "string") {
+            showMessage(result.messageKey);
+            return true;
+        }
+        return false;
     };
 
     const loadServerConfig = async () => {
@@ -196,6 +204,7 @@
         }
         restoreButton.disabled = true;
 
+        let operationAccepted = false;
         try {
             const headers = { Accept: "application/json" };
             if (csrfToken && csrfHeader) {
@@ -207,6 +216,7 @@
                 credentials: "same-origin"
             });
             const hasMessage = await showResponseMessage(response);
+            operationAccepted = response.status === 202 && hasMessage;
             if (!response.ok || !hasMessage) {
                 if (!hasMessage) {
                     showMessage("server.actionFailed");
@@ -217,7 +227,9 @@
             console.error(error);
         } finally {
             actionInProgress = false;
-            await refreshHealth();
+            if (!operationAccepted) {
+                await refreshHealth();
+            }
         }
     });
 
@@ -232,6 +244,7 @@
         uploadControls.forEach((control) => {
             control.disabled = true;
         });
+        let navigatingToMessage = false;
         try {
             const headers = { Accept: "application/json" };
             if (csrfToken && csrfHeader) {
@@ -244,15 +257,19 @@
                 credentials: "same-origin"
             });
             const hasMessage = await showResponseMessage(response);
+            navigatingToMessage = hasMessage;
             if (!hasMessage) {
                 throw new Error("Upload response has no message key.");
             }
         } catch (error) {
+            navigatingToMessage = true;
             showMessage("upload.requestFailed");
             console.error(error);
         } finally {
-            uploadInProgress = false;
-            setAvailability(serverRunning ? "RUNNING" : "UNKNOWN");
+            if (!navigatingToMessage) {
+                uploadInProgress = false;
+                setAvailability(serverRunning ? "RUNNING" : "UNKNOWN");
+            }
         }
     });
 

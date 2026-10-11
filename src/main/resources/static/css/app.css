@@ -880,6 +880,16 @@ body.server-status-only .server-status-card {
     box-shadow: none;
 }
 
+#server-message-progress {
+    margin-bottom: 1rem;
+    background: #f3f1fa;
+    color: var(--pico-primary);
+}
+
+#server-message-progress[hidden] {
+    display: none;
+}
+
 #server-message-dialog h2 {
     margin-bottom: 0.75rem;
     color: var(--ink);
@@ -1146,6 +1156,11 @@ html[data-theme="dark"] .profile-download,
 html[data-theme="dark"] #server-message-dialog {
     border-color: var(--line);
     background: rgba(35, 33, 47, 0.94);
+}
+
+html[data-theme="dark"] #server-message-progress {
+    background: #302b45;
+    color: #c8bcff;
 }
 
 html[data-theme="dark"] .sync-card {
