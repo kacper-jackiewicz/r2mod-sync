@@ -1,6 +1,8 @@
 package dev.kj.r2mod_sync.model.server;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse.ContainerState;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
@@ -56,7 +58,13 @@ public class DockerGameServer implements GameServer {
     }
 
     private ServerStatus getStatusFromContainer(String containerId) {
-        return Boolean.TRUE.equals(dockerClient.inspectContainerCmd(containerId).exec().getState().getRunning()) ? ServerStatus.RUNNING : ServerStatus.STOPPED;
+        ContainerState state = dockerClient.inspectContainerCmd(containerId).exec().getState();
+
+        if(Boolean.TRUE.equals(state.getRunning())) {
+            return state.getHealth().getStatus().equals("healthy") ? ServerStatus.RUNNING : ServerStatus.UPDATING;
+        }else{
+            return ServerStatus.STOPPED;
+        }
     }
 
 
