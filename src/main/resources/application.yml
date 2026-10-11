@@ -8,7 +8,7 @@ spring:
       static-locations: classpath:/static/
 
 server:
-  port:  "${PORT:8080}"
+  port: "${PORT:8080}"
 
 game-server:
   type: "${GAME_SERVER_TYPE:DOCKER}"
@@ -17,7 +17,7 @@ game-server:
   mod-directory: "${MOD_DIRECTORY:~/server}"
 
 directory:
- workspace: "${WORKSPACE_DIR:~/r2z-dir}"
+  workspace: "${WORKSPACE_DIR:~/r2z-dir}"
 
 app:
   tmp-dir: "${TMP_DIR:/tmp}"
@@ -26,3 +26,10 @@ security:
   email: "${USER:admin}"
   password: "${PASSWORD:admin}"
 
+resilience4j:
+  ratelimiter:
+    configs:
+      loginConfig:
+        limitForPeriod: 10
+        limitRefreshPeriod: 600s
+        timeoutDuration: 0s

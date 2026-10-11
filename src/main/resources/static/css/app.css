@@ -15,9 +15,8 @@ body {
     min-height: 100vh;
     min-height: 100svh;
     color: var(--ink);
-    background:
-        radial-gradient(ellipse at 75% 34%, rgba(220, 213, 255, 0.42), transparent 31rem),
-        var(--canvas);
+    background: radial-gradient(ellipse at 75% 34%, rgba(220, 213, 255, 0.42), transparent 31rem),
+    var(--canvas);
 }
 
 .site-header {
@@ -347,9 +346,8 @@ body {
 
 .auth-page,
 .workspace-page {
-    background:
-        radial-gradient(ellipse at 50% 35%, rgba(220, 213, 255, 0.43), transparent 30rem),
-        var(--canvas);
+    background: radial-gradient(ellipse at 50% 35%, rgba(220, 213, 255, 0.43), transparent 30rem),
+    var(--canvas);
 }
 
 .auth-main {
@@ -1113,16 +1111,14 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] body {
-    background:
-        radial-gradient(ellipse at 75% 34%, rgba(92, 69, 209, 0.16), transparent 31rem),
-        var(--canvas);
+    background: radial-gradient(ellipse at 75% 34%, rgba(92, 69, 209, 0.16), transparent 31rem),
+    var(--canvas);
 }
 
 html[data-theme="dark"] .auth-page,
 html[data-theme="dark"] .workspace-page {
-    background:
-        radial-gradient(ellipse at 50% 35%, rgba(92, 69, 209, 0.16), transparent 30rem),
-        var(--canvas);
+    background: radial-gradient(ellipse at 50% 35%, rgba(92, 69, 209, 0.16), transparent 30rem),
+    var(--canvas);
 }
 
 html[data-theme="dark"] .nav-link,

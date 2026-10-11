@@ -57,7 +57,7 @@
     const loadServerConfig = async () => {
         try {
             const response = await fetch(controls.dataset.configUrl, {
-                headers: { Accept: "application/json" },
+                headers: {Accept: "application/json"},
                 credentials: "same-origin"
             });
             await showResponseMessage(response);
@@ -116,7 +116,7 @@
         healthRequestInProgress = true;
         try {
             const response = await fetch(controls.dataset.healthUrl, {
-                headers: { Accept: "application/json" },
+                headers: {Accept: "application/json"},
                 credentials: "same-origin",
                 cache: "no-store"
             });
@@ -169,7 +169,7 @@
         }
 
         try {
-            const headers = { Accept: "application/json" };
+            const headers = {Accept: "application/json"};
             if (csrfToken && csrfHeader) {
                 headers[csrfHeader] = csrfToken;
             }
@@ -206,7 +206,7 @@
 
         let operationAccepted = false;
         try {
-            const headers = { Accept: "application/json" };
+            const headers = {Accept: "application/json"};
             if (csrfToken && csrfHeader) {
                 headers[csrfHeader] = csrfToken;
             }
@@ -246,7 +246,7 @@
         });
         let navigatingToMessage = false;
         try {
-            const headers = { Accept: "application/json" };
+            const headers = {Accept: "application/json"};
             if (csrfToken && csrfHeader) {
                 headers[csrfHeader] = csrfToken;
             }
@@ -282,7 +282,7 @@
         downloadButton.setAttribute("aria-busy", "true");
         try {
             const response = await fetch(downloadButton.href, {
-                headers: { Accept: "application/octet-stream, application/json" },
+                headers: {Accept: "application/octet-stream, application/json"},
                 credentials: "same-origin"
             });
             const hasMessage = await showResponseMessage(response);
@@ -317,7 +317,7 @@
         setStatus("server.checking", "server.checkingBadge", "");
         loadServerConfig();
         refreshHealth();
-    }, { once: true });
+    }, {once: true});
 
     if (window.r2modSyncTranslate) {
         setStatus("server.checking", "server.checkingBadge", "");

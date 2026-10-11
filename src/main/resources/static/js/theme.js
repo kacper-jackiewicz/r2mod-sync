@@ -32,5 +32,5 @@
 
     document.addEventListener("r2mod-sync-translations-ready", () => {
         applyTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
-    }, { once: true });
+    }, {once: true});
 })();

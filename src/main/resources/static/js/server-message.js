@@ -44,7 +44,7 @@
         while (true) {
             try {
                 const response = await fetch(operationUrl, {
-                    headers: { Accept: "application/json" },
+                    headers: {Accept: "application/json"},
                     credentials: "same-origin",
                     cache: "no-store"
                 });

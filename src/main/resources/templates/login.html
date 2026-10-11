@@ -23,7 +23,8 @@
                     <option value="pl">Polski</option>
                 </select>
             </label>
-            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode" data-i18n-aria-label="theme.switchToDark">
+            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode"
+                    data-i18n-aria-label="theme.switchToDark">
                 <span class="theme-toggle-icon" aria-hidden="true">☾</span>
                 <span id="theme-toggle-label" data-i18n="theme.darkMode">Dark mode</span>
             </button>
@@ -39,18 +40,23 @@
             <p data-i18n="login.description">Sign in to continue to your mod workspace.</p>
         </div>
         <section class="auth-card-content">
-            <p th:if="${param.error}" class="status-message error-message" role="alert" data-i18n="login.error">Username or password is incorrect.</p>
+            <p th:if="${param.error}" class="status-message error-message" role="alert" data-i18n="login.error">Username
+                or password is incorrect.</p>
             <p th:if="${param.logout}" class="status-message" data-i18n="login.logout">You have been signed out.</p>
             <form th:action="@{/login}" method="post">
                 <label for="username">
                     <span data-i18n="login.username">Username</span>
-                    <input id="username" name="text" type="text" autocomplete="username" placeholder="Your username" data-i18n-placeholder="login.usernamePlaceholder" required>
+                    <input id="username" name="text" type="text" autocomplete="username" placeholder="Your username"
+                           data-i18n-placeholder="login.usernamePlaceholder" required>
                 </label>
                 <label for="password">
                     <span data-i18n="login.password">Password</span>
-                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" data-i18n-placeholder="login.passwordPlaceholder" required>
+                    <input id="password" name="password" type="password" autocomplete="current-password"
+                           placeholder="Your password" data-i18n-placeholder="login.passwordPlaceholder" required>
                 </label>
-                <button type="submit"><span data-i18n="nav.signIn">Sign in</span> <span class="button-arrow" aria-hidden="true">→</span></button>
+                <button type="submit"><span data-i18n="nav.signIn">Sign in</span> <span class="button-arrow"
+                                                                                        aria-hidden="true">→</span>
+                </button>
             </form>
         </section>
     </article>

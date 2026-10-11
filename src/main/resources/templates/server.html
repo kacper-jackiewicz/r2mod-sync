@@ -25,7 +25,8 @@
                     <option value="pl">Polski</option>
                 </select>
             </label>
-            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode" data-i18n-aria-label="theme.switchToDark">
+            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode"
+                    data-i18n-aria-label="theme.switchToDark">
                 <span class="theme-toggle-icon" aria-hidden="true">☾</span>
                 <span id="theme-toggle-label" data-i18n="theme.darkMode">Dark mode</span>
             </button>
@@ -48,36 +49,46 @@
         </div>
         <div class="workspace-status-copy">
             <h2 id="server-process-name" data-i18n="server.processNameLoading">Loading server process...</h2>
-            <p id="server-status-description" class="status-message" data-i18n="server.checking">Checking server health...</p>
+            <p id="server-status-description" class="status-message" data-i18n="server.checking">Checking server
+                health...</p>
         </div>
-        <span id="server-status-badge" class="server-badge"><span></span><span data-i18n="server.checkingBadge">CHECKING</span></span>
+        <span id="server-status-badge" class="server-badge"><span></span><span
+                data-i18n="server.checkingBadge">CHECKING</span></span>
         <div class="server-controls" role="group" aria-label="Server controls" data-i18n-aria-label="server.controls"
              th:attr="data-health-url=@{/api/server/health},data-config-url=@{/api/server/config},data-message-url=@{/server-message.html}">
             <div class="server-control-buttons">
                 <button type="button" class="secondary" disabled data-server-action="start" data-i18n="server.start"
-                        th:attr="data-action-url=@{/api/server/start}">Start</button>
+                        th:attr="data-action-url=@{/api/server/start}">Start
+                </button>
                 <button type="button" class="secondary" disabled data-server-action="stop" data-i18n="server.stop"
-                        th:attr="data-action-url=@{/api/server/stop}">Stop</button>
+                        th:attr="data-action-url=@{/api/server/stop}">Stop
+                </button>
                 <button type="button" class="secondary" disabled data-server-action="restart" data-i18n="server.restart"
-                        th:attr="data-action-url=@{/api/server/restart}">Restart</button>
+                        th:attr="data-action-url=@{/api/server/restart}">Restart
+                </button>
             </div>
-            <p id="server-controls-note" data-i18n="server.controlsNote">Controls will be available when the server backend is configured.</p>
+            <p id="server-controls-note" data-i18n="server.controlsNote">Controls will be available when the server
+                backend is configured.</p>
         </div>
     </article>
     <section class="upload-section" aria-labelledby="upload-title">
         <div class="upload-heading">
             <p class="eyebrow" data-i18n="upload.eyebrow">MOD PROFILE</p>
             <h2 id="upload-title" data-i18n="upload.title">Upload an R2Z file</h2>
-            <p><span data-i18n="upload.description">Select an</span> <code>.r2z</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
+            <p><span data-i18n="upload.description">Select an</span> <code>.r2z</code> <span
+                    data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
         </div>
         <form class="upload-form" th:action="@{/api/server/upload}" method="post" enctype="multipart/form-data"
               th:attr="data-upload-url=@{/api/server/upload}">
             <label for="r2z-file"><span data-i18n="upload.fileLabel">R2Z file</span>
                 <input id="r2z-file" name="file" type="file" accept=".r2z,application/octet-stream" required disabled>
             </label>
-            <button type="submit" disabled><span data-i18n="upload.submit">Upload file</span> <span class="button-arrow" aria-hidden="true">↑</span></button>
+            <button type="submit" disabled><span data-i18n="upload.submit">Upload file</span> <span class="button-arrow"
+                                                                                                    aria-hidden="true">↑</span>
+            </button>
         </form>
-        <p id="upload-note" class="upload-note" data-i18n="upload.noteUnavailable">Upload will be available when the server is running.</p>
+        <p id="upload-note" class="upload-note" data-i18n="upload.noteUnavailable">Upload will be available when the
+            server is running.</p>
     </section>
     <section class="restore-section" aria-labelledby="restore-title">
         <div class="restore-heading">
@@ -90,7 +101,8 @@
                     th:attr="data-action-url=@{/api/server/revert}">
                 <span data-i18n="restore.button">Restore vanilla setup</span>
             </button>
-            <p id="restore-note" data-i18n="restore.noteUnavailable">Restore will be available when the server is running.</p>
+            <p id="restore-note" data-i18n="restore.noteUnavailable">Restore will be available when the server is
+                running.</p>
         </div>
     </section>
     <section class="download-section" aria-labelledby="download-title">
@@ -104,7 +116,8 @@
                aria-disabled="true" aria-describedby="download-note" tabindex="-1">
                 <span data-i18n="download.button">Download current R2Z</span>
             </a>
-            <p id="download-note" data-i18n="download.noteUnavailable">Download will be available when the server is running.</p>
+            <p id="download-note" data-i18n="download.noteUnavailable">Download will be available when the server is
+                running.</p>
         </div>
     </section>
     <footer class="workspace-actions">

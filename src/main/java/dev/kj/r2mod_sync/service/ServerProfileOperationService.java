@@ -33,7 +33,7 @@ public class ServerProfileOperationService {
     private final ConcurrentHashMap<UUID, OperationStatus> operations = new ConcurrentHashMap<>();
 
 
-    public UUID submitModLoad(Supplier<Path> supplier, String responsePrefix){
+    public UUID submitModLoad(Supplier<Path> supplier, String responsePrefix) {
         sharedOperationLock.tryAcquire();
         try {
             return startOperation(supplier.get(), responsePrefix + ".success", responsePrefix + ".error");
@@ -56,6 +56,9 @@ public class ServerProfileOperationService {
             return operationId;
         } catch (RuntimeException exception) {
             operations.remove(operationId);
+            if (candidate.getFileName().toString().startsWith(CANDIDATE_PREFIX)) {
+                fileService.deleteCandidate(candidate);
+            }
             throw exception;
         }
     }
@@ -72,7 +75,7 @@ public class ServerProfileOperationService {
             log.error("Server profile operation {} failed.", operationId, exception);
             operations.put(operationId, new OperationStatus(OperationState.FAILED, "server.actionFailed"));
         } finally {
-            if (candidate.getFileName().startsWith(CANDIDATE_PREFIX)) {
+            if (candidate.getFileName().toString().startsWith(CANDIDATE_PREFIX)) {
                 fileService.deleteCandidate(candidate);
             }
             sharedOperationLock.release();

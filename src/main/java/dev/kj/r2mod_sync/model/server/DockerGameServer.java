@@ -1,12 +1,8 @@
 package dev.kj.r2mod_sync.model.server;
 
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse.ContainerState;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import dev.kj.r2mod_sync.model.ServerStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +17,7 @@ public class DockerGameServer implements GameServer {
 
     private final String containerName;
     private final Path modDirectory;
-
-    private final DockerClient dockerClient = createDockerClient();
+    private final DockerClient dockerClient;
 
     @Override
     public ServerStatus getStatus() {
@@ -60,9 +55,9 @@ public class DockerGameServer implements GameServer {
     private ServerStatus getStatusFromContainer(String containerId) {
         ContainerState state = dockerClient.inspectContainerCmd(containerId).exec().getState();
 
-        if(Boolean.TRUE.equals(state.getRunning())) {
+        if (Boolean.TRUE.equals(state.getRunning())) {
             return state.getHealth().getStatus().equals("healthy") ? ServerStatus.RUNNING : ServerStatus.UPDATING;
-        }else{
+        } else {
             return ServerStatus.STOPPED;
         }
     }
@@ -78,16 +73,5 @@ public class DockerGameServer implements GameServer {
                                 .contains("/" + containerName))
                 .map(Container::getId)
                 .findFirst();
-    }
-
-    private static DockerClient createDockerClient() {
-        var config = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
-        var httpClient = new ApacheDockerHttpClient.Builder()
-                .dockerHost(config.getDockerHost())
-                .sslConfig(config.getSSLConfig())
-                .build();
-        return DockerClientBuilder.getInstance(config)
-                .withDockerHttpClient(httpClient)
-                .build();
     }
 }

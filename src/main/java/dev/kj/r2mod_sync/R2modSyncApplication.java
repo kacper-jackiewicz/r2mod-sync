@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class R2modSyncApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(R2modSyncApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(R2modSyncApplication.class, args);
+    }
 
 }

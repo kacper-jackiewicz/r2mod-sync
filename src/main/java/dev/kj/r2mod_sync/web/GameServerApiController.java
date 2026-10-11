@@ -69,7 +69,7 @@ public class GameServerApiController {
 
     @PostMapping("/revert")
     public ResponseEntity<Map<String, String>> revert() {
-        UUID operationId = profileOperationService.submitModLoad(fileService::getVanilla,"restore");
+        UUID operationId = profileOperationService.submitModLoad(fileService::getVanilla, "restore");
         return ResponseEntity.accepted().body(Map.of("operationId", operationId.toString()));
     }
 
