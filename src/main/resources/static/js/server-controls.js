@@ -12,7 +12,6 @@
     const uploadForm = document.querySelector(".upload-form");
     const uploadControls = [...document.querySelectorAll(".upload-form input, .upload-form button")];
     const uploadNote = document.querySelector("#upload-note");
-    const uploadFeedback = document.querySelector("#upload-feedback");
     const messageDialog = document.querySelector("#server-message-dialog");
     const messageText = document.querySelector("#server-message-text");
     const restoreButton = document.querySelector("#restore-vanilla");
@@ -32,8 +31,9 @@
     let serverRunning = false;
     let uploadInProgress = false;
     let healthRequestInProgress = false;
-    let uploadFeedbackKey;
     let messageRefreshTimer;
+
+    uploadForm.reset();
 
     const showMessage = (messageKey) => {
         messageText.textContent = translate(messageKey);
@@ -52,17 +52,6 @@
         }
         showMessage(result.messageKey);
         return true;
-    };
-
-    const renderUploadFeedback = () => {
-        if (!uploadFeedbackKey) {
-            return;
-        }
-        uploadFeedback.textContent = translate(uploadFeedbackKey);
-        uploadFeedback.hidden = false;
-        const isError = uploadFeedbackKey !== "upload.success";
-        uploadFeedback.className = isError ? "status-message error-message" : "upload-feedback";
-        uploadFeedback.setAttribute("role", isError ? "alert" : "status");
     };
 
     const loadServerConfig = async () => {
@@ -251,8 +240,6 @@
         uploadControls.forEach((control) => {
             control.disabled = true;
         });
-        uploadFeedback.hidden = true;
-
         try {
             const headers = { Accept: "application/json" };
             if (csrfToken && csrfHeader) {
@@ -269,8 +256,7 @@
                 throw new Error("Upload response has no message key.");
             }
         } catch (error) {
-            uploadFeedbackKey = "upload.requestFailed";
-            renderUploadFeedback();
+            showMessage("upload.requestFailed");
             console.error(error);
         } finally {
             uploadInProgress = false;
@@ -320,14 +306,12 @@
 
     document.addEventListener("r2mod-sync-translations-ready", () => {
         setStatus("server.checking", "server.checkingBadge", "");
-        renderUploadFeedback();
         loadServerConfig();
         refreshHealth();
     }, { once: true });
 
     if (window.r2modSyncTranslate) {
         setStatus("server.checking", "server.checkingBadge", "");
-        renderUploadFeedback();
         loadServerConfig();
         refreshHealth();
     }

@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
+import java.time.Duration;
 
 import static dev.kj.r2mod_sync.model.ServerStatus.RUNNING;
 import static dev.kj.r2mod_sync.model.ServerStatus.STOPPED;
@@ -24,10 +25,10 @@ public class UpdateService {
     public void update(Path candidate) {
         fileValidator.validateR2Z(candidate);
         gameServer.stop();
-        await().until(() -> gameServer.getStatus() == STOPPED);
+        await().atMost(Duration.ofMinutes(5)).until(() -> gameServer.getStatus() == STOPPED);
         modLoader.cleanModDir(gameServer.getModDirectory());
         modLoader.loadMods(candidate, gameServer.getModDirectory());
         gameServer.start();
-        await().until(() -> gameServer.getStatus() == RUNNING);
+        await().atMost(Duration.ofMinutes(5)).until(() -> gameServer.getStatus() == RUNNING);
     }
 }

@@ -857,15 +857,6 @@ body.server-status-only .server-status-card {
     font-size: 0.75rem;
 }
 
-.upload-feedback {
-    padding: 0.8rem 0.9rem;
-    border-left: 0.2rem solid #28a878;
-    border-radius: 0.35rem;
-    background: #edfbf5;
-    color: #258960;
-    font-size: 0.85rem;
-}
-
 #server-message-dialog {
     width: min(32rem, calc(100% - 2rem));
     padding: 0;
@@ -1246,12 +1237,6 @@ html[data-theme="dark"] .upload-note code {
     border-color: #454156;
     background: #302b45;
     color: #c8bcff;
-}
-
-html[data-theme="dark"] .upload-feedback {
-    border-left-color: #53c99b;
-    background: #19382f;
-    color: #a7ebd0;
 }
 
 html[data-theme="dark"] #server-message-dialog::backdrop {

@@ -70,7 +70,6 @@
             <h2 id="upload-title" data-i18n="upload.title">Upload an R2Z file</h2>
             <p><span data-i18n="upload.description">Select an</span> <code>.r2z</code> <span data-i18n="upload.descriptionEnd">file to submit it to the server backend.</span></p>
         </div>
-        <p id="upload-feedback" class="upload-feedback" role="status" hidden></p>
         <form class="upload-form" th:action="@{/api/server/upload}" method="post" enctype="multipart/form-data"
               th:attr="data-upload-url=@{/api/server/upload}">
             <label for="r2z-file"><span data-i18n="upload.fileLabel">R2Z file</span>

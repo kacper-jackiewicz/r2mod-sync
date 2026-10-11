@@ -6,8 +6,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,6 +42,17 @@ public class R2ModManModLoader implements ModLoader {
 
         if (process.waitFor() != 0) {
             log.error("r2podman-headless failed check host logs");
+        }
+    }
+
+    @Override
+    public void cleanModDir(Path destination) {
+        try {
+            Path pluginsDir = destination.resolve("BepInEx").resolve("plugins");
+            log.info("Cleaning mod directory: {}", pluginsDir.toAbsolutePath().normalize());
+            Optional.of(pluginsDir.toFile()).map(File::listFiles).map(Arrays::asList).orElse(Collections.emptyList()).forEach(File::delete);
+        } catch (Exception e) {
+            log.error("Could not clean mod directory: {}", destination.toAbsolutePath().normalize(), e);
         }
     }
 }
