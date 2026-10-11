@@ -53,6 +53,14 @@
                 }
 
                 const result = await response.json();
+                if (result.state === "PENDING") {
+                    messageKey = messageKeys.has(result.messageKey)
+                        ? result.messageKey
+                        : "server.actionInProgress";
+                    renderMessage();
+                    await waitForNextPoll();
+                    continue;
+                }
                 if (result.state === "COMPLETED" || result.state === "FAILED") {
                     messageKey = messageKeys.has(result.messageKey) ? result.messageKey : "server.actionFailed";
                     renderMessage();
@@ -60,9 +68,7 @@
                     returnToWorkspace();
                     return;
                 }
-                if (result.state !== "PENDING") {
-                    throw new Error("Server operation returned an unknown state.");
-                }
+                throw new Error("Server operation returned an unknown state.");
             } catch (error) {
                 console.error(error);
                 if (error instanceof TypeError) {
