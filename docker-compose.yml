@@ -1,0 +1,50 @@
+version: "3"
+services:
+  r2mod-sync:
+    image: "your_image_tag:latest"
+    container_name: r2mod-sync
+    restart: unless-stopped
+    ports:
+      - 8080:8080/tcp
+    environment:
+      DOCKER_HOST: "unix:///var/run/docker.sock"
+      PORT: 8080
+      GAME_SERVER_TYPE: DOCKER
+      PROCESS_NAME: valheim
+      MOD_DIRECTORY: /server
+      WORKSPACE_DIR: /workspace
+      TMP_DIR: /tmp
+      USER: admin
+      PASSWORD: admin
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/valheim/server:/server
+      - ~/r2z-dir:/workspace
+  valheim:
+    image: mbround18/valheim:latest
+    restart: unless-stopped
+    container_name: valheim
+    ports:
+      - 2456:2456/udp
+      - 2457:2457/udp
+      - 2458:2458/udp
+    environment:
+      PORT: 2456
+      NAME: "Dedicated"
+      WORLD: "Dedicated"
+      PASSWORD: "abc"
+      PUBLIC: 1
+      AUTO_UPDATE: 1
+      AUTO_UPDATE_SCHEDULE: "0 1 * * *"
+      AUTO_BACKUP: 1
+      AUTO_BACKUP_SCHEDULE: "*/15 * * * *"
+      AUTO_BACKUP_REMOVE_OLD: 1
+      AUTO_BACKUP_DAYS_TO_LIVE: 3
+      AUTO_BACKUP_ON_UPDATE: 1
+      AUTO_BACKUP_ON_SHUTDOWN: 1
+      UPDATE_ON_STARTUP: 1
+      TYPE: BepInEx
+    volumes:
+      - ~/valheim/saves:/home/steam/.config/unity3d/IronGate/Valheim
+      - ~/valheim/server:/home/steam/valheim
+      - ~/valheim/backups:/home/steam/backups

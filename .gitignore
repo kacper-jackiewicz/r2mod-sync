@@ -9,6 +9,7 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -19,6 +20,7 @@ target/
 .factorypath
 .project
 .settings
+.springBean
 .springBeans
 .sts4-cache
 

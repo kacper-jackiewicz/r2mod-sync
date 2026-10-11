@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <title data-i18n-title="page.home.title">R2ModSync</title>
+</head>
+<body>
+<header class="site-header">
+    <nav class="site-nav" aria-label="Main navigation" data-i18n-aria-label="nav.mainNavigation">
+        <a class="brand" th:href="@{/}" aria-label="R2ModSync home" data-i18n-aria-label="brand.home">
+            <span class="brand-mark" aria-hidden="true">r2</span>
+            <span>R2ModSync</span>
+        </a>
+        <div class="nav-actions">
+            <label class="language-picker">
+                <span class="visually-hidden" data-i18n="language.label">Language</span>
+                <select class="language-select" aria-label="Language" data-i18n-aria-label="language.label">
+                    <option value="en">English</option>
+                    <option value="pl">Polski</option>
+                </select>
+            </label>
+            <button type="button" class="theme-toggle secondary" aria-label="Switch to dark mode"
+                    data-i18n-aria-label="theme.switchToDark">
+                <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+                <span id="theme-toggle-label" data-i18n="theme.darkMode">Dark mode</span>
+            </button>
+            <a class="nav-link" th:href="@{/login.html}" data-i18n="nav.signIn">Sign in</a>
+        </div>
+    </nav>
+</header>
+<main class="home-main">
+    <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span data-i18n="home.eyebrow">MOD SYNCHRONIZATION</span>
+            </p>
+            <h1 id="hero-title"><span class="hero-title-line" data-i18n="home.titleFirst">Keep your mods</span><br><span
+                    class="hero-title-accent" data-i18n="home.titleSecond">in sync.</span></h1>
+            <p class="hero-description" data-i18n="home.description">A simpler way to keep your mod setup together. Sign
+                in to get started.</p>
+            <a class="button-link" th:href="@{/login.html}" role="button">
+                <span data-i18n="nav.signIn">Sign in</span> <span class="button-arrow" aria-hidden="true">→</span>
+            </a>
+            <p class="hero-note" data-i18n="home.note">Your mod setup, all in one place.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-outer"></div>
+            <div class="orbit orbit-inner"></div>
+            <div class="sync-card">
+                <div class="sync-card-top">
+                    <span class="sync-icon">↻</span>
+                    <span class="sync-state"><span></span><span data-i18n="home.ready">READY</span></span>
+                </div>
+                <div class="sync-lines">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="sync-card-bottom">
+                    <span data-i18n="home.modLibrary">MOD LIBRARY</span>
+                    <span class="sync-count" data-i18n="home.inSync">IN SYNC</span>
+                </div>
+            </div>
+            <span class="art-spark spark-one">✳</span>
+            <span class="art-spark spark-two">✳</span>
+        </div>
+    </section>
+    <footer class="home-footer">
+        <span data-i18n="home.footer">MODS, IN HARMONY.</span>
+    </footer>
+</main>
+<script th:src="@{/js/i18n.js}" defer></script>
+<script th:src="@{/js/theme.js}" defer></script>
+</body>
+</html>

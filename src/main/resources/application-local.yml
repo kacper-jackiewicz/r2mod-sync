@@ -1,0 +1,5 @@
+game-server:
+  type: none
+  process-name: valheim
+  status: running
+  mod-directory: "${MOD_DIRECTORY:~/server}"
