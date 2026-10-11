@@ -49,7 +49,7 @@ public class ServerProfileOperationService {
 
     private UUID startOperation(Path candidate, String successKey, String validationErrorKey) {
         UUID operationId = UUID.randomUUID();
-        operations.put(operationId, new OperationStatus(OperationState.PENDING, null));
+        operations.put(operationId, new OperationStatus(OperationState.PENDING, "server.operationInProgress"));
         try {
             serverProfileExecutor.execute(() -> runOperation(
                     operationId, candidate, successKey, validationErrorKey));

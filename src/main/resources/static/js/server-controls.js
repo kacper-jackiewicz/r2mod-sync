@@ -181,7 +181,7 @@
             const hasMessage = await showResponseMessage(response);
             if (!response.ok) {
                 if (!hasMessage) {
-                    controlsNote.textContent = translate("server.actionFailed");
+                    controlsNote.textContent = translate("server.operationInProgress");
                 }
                 throw new Error(`Server ${action} request failed: ${response.status}`);
             }

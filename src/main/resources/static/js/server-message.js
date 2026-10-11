@@ -16,10 +16,10 @@
     const params = new URLSearchParams(window.location.search);
     const operationId = params.get("operationId");
     let messageKey = messageKeys.has(params.get("messageKey")) ? params.get("messageKey") : "server.actionInProgress";
-    progressIcon.hidden = !operationId;
 
     const renderMessage = () => {
         messageText.textContent = translate(messageKey);
+        progressIcon.hidden = messageKey !== "server.operationInProgress";
     };
 
     document.addEventListener("r2mod-sync-translations-ready", renderMessage);
