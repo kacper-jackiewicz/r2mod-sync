@@ -26,7 +26,7 @@ class FileServiceTest {
 
         Path candidate = fileService.receive(upload);
 
-        assertTrue(candidate.getParent().equals(workspace.toAbsolutePath().normalize()));
+        assertEquals(candidate.getParent(), workspace.toAbsolutePath().normalize());
         assertTrue(candidate.getFileName().toString().startsWith(FileService.CANDIDATE_PREFIX));
         assertArrayEquals(contents, Files.readAllBytes(candidate));
     }
