@@ -7,5 +7,6 @@ The application coordinates server operations, applies profile updates, and repo
 It is designed to be run as a separate container and check server status by docker-client. Tests with image [mbround18/valheim](https://hub.docker.com/r/mbround18/valheim)
 Sample docker-compose.yml provided.
 
-This application is not production ready. Web UI is completely copilot driven this should be properly change to the one of the Frontend framework and extracted out to separate module.
-This is just small evening project to allow non-technical friends to update mods on their dedicated server.
+The project is a Maven reactor with separate `frontend` (React/TypeScript assets) and `backend` (Spring Boot application) modules. The frontend module builds its static assets into a JAR consumed by the backend, and the Docker image runs the packaged application as a single service. Build the full project with `mvn package` or build the image with `docker build -t r2mod-sync .`.
+
+This is a small project intended to let non-technical friends update mods on their dedicated server.
