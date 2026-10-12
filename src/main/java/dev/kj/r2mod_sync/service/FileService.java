@@ -23,9 +23,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileService {
 
-    public static String CURRENT_FILE_NAME = "current.r2z";
-    public static String VANILLA_FILE_NAME = "vanilla.r2z";
-    public static String CANDIDATE_PREFIX = "candidate_";
+    public static final String CURRENT_FILE_NAME = "current.r2z";
+    public static final String VANILLA_FILE_NAME = "vanilla.r2z";
+    public static final String CANDIDATE_PREFIX = "candidate_";
 
     private final DirectoryProperties directoryProperties;
 

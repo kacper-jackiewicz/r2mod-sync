@@ -20,7 +20,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, RateLimiterRegistry registry) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, RateLimiterRegistry registry) {
         LoginRateLimitFilter loginFilter =
                 new LoginRateLimitFilter(registry);
         return http

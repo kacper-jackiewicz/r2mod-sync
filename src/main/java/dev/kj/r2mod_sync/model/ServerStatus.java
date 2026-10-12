@@ -4,5 +4,5 @@ public enum ServerStatus {
     NOT_CONFIGURED,
     RUNNING,
     STOPPED,
-    UPDATING;
+    UPDATING
 }
