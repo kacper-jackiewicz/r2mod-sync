@@ -1,5 +1,6 @@
 package dev.kj.r2mod_sync.web;
 
+import dev.kj.r2mod_sync.aop.AquireLock;
 import dev.kj.r2mod_sync.aop.CheckLock;
 import dev.kj.r2mod_sync.config.GameServerProperties;
 import dev.kj.r2mod_sync.model.ServerStatus;
@@ -40,19 +41,19 @@ public class GameServerApiController {
     }
 
     @PostMapping("/start")
-    @CheckLock
+    @AquireLock
     public void start() {
         gameServerControlService.start();
     }
 
     @PostMapping("/stop")
-    @CheckLock
+    @AquireLock
     public void stop() {
         gameServerControlService.stop();
     }
 
     @PostMapping("/restart")
-    @CheckLock
+    @AquireLock
     public void restart() {
         gameServerControlService.restart();
     }

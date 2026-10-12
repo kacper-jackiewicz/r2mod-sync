@@ -32,9 +32,13 @@ public class FileService {
     @PostConstruct
     public void initializeVanilla() {
         try (InputStream vanilla = getClass().getResourceAsStream("/" + VANILLA_FILE_NAME)) {
+            if(vanilla==null){
+                throw new IOException("No resource found");
+            }
             Path vanillaPath = getVanilla();
             Files.createDirectories(vanillaPath.getParent().toAbsolutePath().normalize());
             Files.copy(vanilla, vanillaPath, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Created new {} file that will be used for restoring server",VANILLA_FILE_NAME);
         } catch (IOException exception) {
             log.error("Failed to initialize vanilla.r2z", exception);
         }
@@ -49,6 +53,7 @@ public class FileService {
             Path workspace = Path.of(directoryProperties.workspace()).toAbsolutePath().normalize();
             Path destination = workspace.resolve(buildCandidateFileName());
             file.transferTo(destination);
+            log.info("Accepted candidate package: {}",destination.getFileName());
             return destination;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -62,6 +67,7 @@ public class FileService {
 
     @SneakyThrows
     public void updateCurrent(Path candidate) {
+        log.info("Current server pack is now: {}",candidate.getFileName());
         Files.copy(candidate, getCurrentPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
@@ -72,6 +78,7 @@ public class FileService {
                 return;
             }
             Files.delete(candidate);
+            log.info("Deleting candidate: {}",candidate.getFileName());
         } catch (IOException e) {
             log.error("Failed to delete candidate file: {}", candidate.toAbsolutePath().normalize(), e);
         }

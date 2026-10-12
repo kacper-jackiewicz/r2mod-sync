@@ -29,21 +29,27 @@ public class DockerGameServer implements GameServer {
     @Override
     public void start() {
         getContainerId(dockerClient).ifPresent(containerId -> {
+            log.info("Starting container {} with id {}",containerName, containerId);
             dockerClient.startContainerCmd(containerId).exec();
+            log.info("Started container {} with id {}",containerName, containerId);
         });
     }
 
     @Override
     public void stop() {
         getContainerId(dockerClient).ifPresent(containerId -> {
+            log.info("Stopping container {} with id {}",containerName, containerId);
             dockerClient.stopContainerCmd(containerId).exec();
+            log.info("Stopped container {} with id {}",containerName, containerId);
         });
     }
 
     @Override
     public void restart() {
         getContainerId(dockerClient).ifPresent(containerId -> {
+            log.info("Restarting container {} with id {}",containerName, containerId);
             dockerClient.restartContainerCmd(containerId).exec();
+            log.info("Restarted container {} with id {}",containerName, containerId);
         });
     }
 
