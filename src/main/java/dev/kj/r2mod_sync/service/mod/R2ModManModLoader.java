@@ -6,6 +6,9 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import org.zeroturnaround.exec.ProcessExecutor;
+import org.zeroturnaround.exec.ProcessResult;
+import org.zeroturnaround.exec.stream.slf4j.Slf4jStream;
 
 import java.nio.file.Path;
 
@@ -29,15 +32,15 @@ public class R2ModManModLoader implements ModLoader {
                 workDir,
                 profileZip);
 
-        ProcessBuilder processBuilder = new ProcessBuilder(
-                "r2modman-headless",
-                "--install-dir=" + installDir,
-                "--work-dir=" + workDir,
-                "--profile-zip=" + profileZip);
-        processBuilder.redirectErrorStream(true);
-        Process process = processBuilder.start();
+        ProcessResult processResult = new ProcessExecutor().command("r2modman-headless",
+                        "--install-dir=" + installDir,
+                        "--work-dir=" + workDir,
+                        "--profile-zip=" + profileZip)
+                .redirectOutput(Slf4jStream.ofCaller().asInfo())
+                .redirectError(Slf4jStream.ofCaller().asError())
+                .execute();
 
-        if (process.waitFor() != 0) {
+        if (processResult.getExitValue() != 0) {
             log.error("r2podman-headless failed check host logs");
         } else {
             log.info("Finished r2podman-headless");

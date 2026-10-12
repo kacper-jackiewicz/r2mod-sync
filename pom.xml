@@ -19,6 +19,7 @@
 		<commons-io.version>2.22.0</commons-io.version>
 		<javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
 		<spring-boot-starter-aop.version>3.5.16</spring-boot-starter-aop.version>
+		<zt-exec.version>1.13.0</zt-exec.version>
 	</properties>
 
 
@@ -95,6 +96,11 @@
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>${javax.ws.rs-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-exec</artifactId>
+			<version>${zt-exec.version}</version>
 		</dependency>
 	</dependencies>
 
