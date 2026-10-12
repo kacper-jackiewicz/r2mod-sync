@@ -39,6 +39,8 @@ public class R2ModManModLoader implements ModLoader {
 
         if (process.waitFor() != 0) {
             log.error("r2podman-headless failed check host logs");
+        } else {
+            log.info("Finished r2podman-headless");
         }
     }
 
