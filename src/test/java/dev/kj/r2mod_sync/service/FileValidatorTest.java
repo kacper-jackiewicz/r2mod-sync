@@ -42,12 +42,30 @@ class FileValidatorTest {
         assertThrows(NotValidR2Z.class, () -> validator.validateR2Z(profile));
     }
 
-    private Path createZip(String filename, String entryName) throws IOException {
+    @Test
+    void rejectsArchiveEntriesThatCanEscapeExtractionDirectory() throws IOException {
+        String[] unsafeEntryNames = {
+                "BepInEx/../../../outside",
+                "BepInEx\\..\\..\\outside",
+                "/outside",
+                "C:\\outside"
+        };
+
+        for (int i = 0; i < unsafeEntryNames.length; i++) {
+            Path profile = createZip("unsafe-" + i + ".r2z", "export.r2x", unsafeEntryNames[i]);
+
+            assertThrows(NotValidR2Z.class, () -> validator.validateR2Z(profile), unsafeEntryNames[i]);
+        }
+    }
+
+    private Path createZip(String filename, String... entryNames) throws IOException {
         Path profile = temporaryDirectory.resolve(filename);
         try (ZipOutputStream zip = new ZipOutputStream(Files.newOutputStream(profile))) {
-            zip.putNextEntry(new ZipEntry(entryName));
-            zip.write("profile".getBytes());
-            zip.closeEntry();
+            for (String entryName : entryNames) {
+                zip.putNextEntry(new ZipEntry(entryName));
+                zip.write("profile".getBytes());
+                zip.closeEntry();
+            }
         }
         return profile;
     }
